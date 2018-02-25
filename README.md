@@ -47,17 +47,16 @@ Social feed screen based on Facebook.
 
 ### TODO
 
-- [ ] Design & build an Intro Screen
+- [x] Design & build an Intro Screen
   - [ ] :star: **Bonus:** Add [Snap Carousel]() with [Lottie animations]() to Intro Screen
-- [ ] Design & build an Signup Screen
+- [x] Design & build an Signup Screen
   - [ ] :star: **Bonus:** Add buttons to sign up with Facebook & Twitter
-- [ ] Design & build an Login Screen
+- [x] Design & build an Login Screen
   - [ ] :star: **Bonus:** Add buttons to login with Facebook & Twitter
-- [ ] Design & build an Profile Screen
-  - [ ] :star: **Bonus:** Add the Logout button
+- [x] Design & build an Profile Screen
+  - [x] :star: **Bonus:** Add the Logout button
 - [ ] Design & build an Social Feed Screen with [Mock Data]()
-  - [ ] :star: **Bonus:** Add the Logout button
-- [ ] Attach screenshots/gif to readme
+- [x] Attach screenshots/gif of screens to `README.MD`
 
 ### Demo
 <div style={{display: flex; flex-direction: row}}>
