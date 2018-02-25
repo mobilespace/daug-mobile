@@ -58,10 +58,10 @@ Intro, Login & Sign up screen based on Robinhood App.
 
 ### Demo
 <div stlye={{display: flex; flex-direction: row}}>
-  <img src="screenshots/intro_screen.png" width="350" />
-  <img src="screenshots/login_screen_1.png" width="350" />
-  <img src="screenshots/login_screen_2.png" width="350" />
-  <img src="screenshots/login_screen_3.png" width="350" />
+  <img src="screenshots/intro_screen.png" width="250" />
+  <img src="screenshots/login_screen_1.png" width="250" />
+  <img src="screenshots/login_screen_2.png" width="250" />
+  <img src="screenshots/login_screen_3.png" width="250" />
 </div>
 
 ## Submission
