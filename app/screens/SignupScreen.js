@@ -11,16 +11,13 @@ import { Font, LinearGradient } from 'expo';
 import { Button, Input } from 'react-native-elements';
 import { SimpleLineIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 
-import IntroSlider from '../components/IntroSlider';
-
-import LOGO_IMAGE from '../../assets/daug_logo.png';
-
-export default class LoginScreen extends React.Component {
+export default class SignupScreen extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
       fontLoaded: false,
+      name: '',
       email: '',
       password: ''
     };
@@ -34,13 +31,13 @@ export default class LoginScreen extends React.Component {
     this.setState({ fontLoaded: true });
   }
 
-  loginButtonPressed() {
-    const { email, password } = this.state;
+  signupButtonPressed() {
+    const { name, email, password } = this.state;
 
     return (
       Alert.alert(
         'Success!',
-        `Email: ${email} & Password: ${password}`,
+        `Name: ${name} & Email: ${email} & Password: ${password}`,
         [
           { text: 'OK', onPress: () => console.log('OK Pressed') }
         ],
@@ -49,14 +46,14 @@ export default class LoginScreen extends React.Component {
     )
   }
 
-  loginValid() {
-    const { email, password } = this.state
+  signupValid() {
+    const { name, email, password } = this.state
 
-    return email.length > 0 && password.length > 0
+    return name.length > 0 && email.length > 0 && password.length > 0
   }
 
   render() {
-    const { email, password } = this.state
+    const { name, email, password } = this.state
 
     return (
       <LinearGradient
@@ -64,6 +61,30 @@ export default class LoginScreen extends React.Component {
         style={styles.mainContent}>
         {this.state.fontLoaded &&
           <View style={styles.inputViewContainer}>
+            <Input
+              ref={input => this.nameInput = input}
+              leftIcon={
+                <MaterialCommunityIcons
+                  name='rename-box'
+                  color='white'
+                  size={25}
+                />
+              }
+              value={name}
+              onChangeText={name => this.setState({ name })}
+              placeholder="Name"
+              placeholderTextColor="white"
+              autoCapitalize="none"
+              returnKeyType="next"
+              displayError={false}
+              errorMessage="Please enter a valid name"
+              errorStyle={{ color: 'white' }}
+              containerStyle={styles.inputContainer}
+              inputStyle={{ color: 'white', fontFamily: 'Righteous' }}
+              onSubmitEditing={() =>
+                this.emailInput.focus()
+              }
+            />
             <Input
               ref={input => this.emailInput = input}
               leftIcon={
@@ -99,26 +120,26 @@ export default class LoginScreen extends React.Component {
                 />
               }
               value={password}
-              onChangeText={ password => this.setState({ password })}
+              onChangeText={password => this.setState({ password })}
               placeholder="Password"
               placeholderTextColor="white"
               secureTextEntry
               displayError={false}
               errorMessage="The password fields are not identics"
-              errorStyle={{color: 'white'}}
+              errorStyle={{ color: 'white' }}
               returnKeyType="go"
               containerStyle={styles.inputContainer}
               inputStyle={{ color: 'white', fontFamily: 'Righteous' }}
               onSubmitEditing={() => {
-                this.loginButtonPressed()
+                this.signupButtonPressed()
               }}
             />
             <Button
               style={styles.buttonView}
-              text="Login"
-              buttonStyle={[styles.loginButtonStyle, !this.loginValid() && { backgroundColor: 'gray'}]}
-              disabled={!this.loginValid()}
-              onPress={this.loginButtonPressed.bind(this)}
+              text="Sign Up"
+              buttonStyle={[styles.loginButtonStyle, !this.signupValid() && { backgroundColor: 'gray' }]}
+              disabled={!this.signupValid()}
+              onPress={this.signupButtonPressed.bind(this)}
               textStyle={styles.buttonTextStyle}
             />
           </View>

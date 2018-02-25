@@ -12,6 +12,7 @@ import { Button } from 'react-native-elements';
 import IntroSlider from '../components/IntroSlider';
 
 import LoginScreen from './LoginScreen';
+import SignupScreen from './SignupScreen';
 
 import LOGO_IMAGE from '../../assets/daug_logo.png';
 
@@ -42,6 +43,8 @@ export default class IntroScreen extends React.Component {
 
     if (screen === 'login') {
       return <LoginScreen />
+    } else if (screen === 'signup') {
+      return <SignupScreen />
     } else {
       return (
         <View style={styles.mainContent}>
