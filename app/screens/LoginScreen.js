@@ -84,7 +84,7 @@ export default class LoginScreen extends React.Component {
               errorMessage="Please enter a valid email address"
               errorStyle={{ color: 'white' }}
               containerStyle={styles.inputContainer}
-              inputStyle={{ color: 'white' }}
+              inputStyle={{ color: 'white', fontFamily: 'Righteous' }}
               onSubmitEditing={() =>
                 this.passwordInput.focus()
               }
@@ -108,7 +108,7 @@ export default class LoginScreen extends React.Component {
               errorStyle={{color: 'white'}}
               returnKeyType="go"
               containerStyle={styles.inputContainer}
-              inputStyle={{ color: 'white'}}
+              inputStyle={{ color: 'white', fontFamily: 'Righteous' }}
               onSubmitEditing={() => {
                 this.loginButtonPressed()
               }}
@@ -119,6 +119,7 @@ export default class LoginScreen extends React.Component {
               buttonStyle={[styles.loginButtonStyle, !this.loginValid() && { backgroundColor: 'gray'}]}
               disabled={!this.loginValid()}
               onPress={this.loginButtonPressed.bind(this)}
+              textStyle={styles.buttonTextStyle}
             />
           </View>
         }
