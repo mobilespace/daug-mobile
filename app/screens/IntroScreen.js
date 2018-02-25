@@ -3,10 +3,13 @@ import {
   StyleSheet,
   View,
   Text,
-  Image
+  Image,
+  TouchableHighlight
 } from 'react-native';
-
 import { Font, LinearGradient } from 'expo';
+import { Button } from 'react-native-elements';
+
+import IntroSlider from '../components/IntroSlider';
 
 import LOGO_IMAGE from '../../assets/daug_logo.png';
 
@@ -29,30 +32,49 @@ export default class IntroScreen extends React.Component {
 
   render() {
     return (
-      <LinearGradient
-        colors={['#fd746c', '#ff9068']}
-        style={styles.mainContent}>
-        <Image source={LOGO_IMAGE} style={styles.logoImage} resizeMode="contain" />
-        {this.state.fontLoaded && <Text style={styles.logoTitle}>DAUG</Text>}
-      </LinearGradient>
+      <View style={styles.mainContent}>
+        <IntroSlider />
+        {this.state.fontLoaded &&
+          <View style={styles.introButtonsContainer}>
+            <TouchableHighlight
+              activeOpacity={0.5}
+              underlayColor="rgba(0, 0, 0, 0)"
+              style={styles.buttonContainer}
+              onPress={() => console.log('Login pressed')}>
+              <Text style={styles.buttonTitle}>Login</Text>
+            </TouchableHighlight>
+            <TouchableHighlight
+              activeOpacity={0.5}
+              underlayColor="rgba(0, 0, 0, 0)"
+              style={styles.buttonContainer}
+              onPress={() => console.log('Signup pressed')}>
+              <Text style={styles.buttonTitle}>Sign Up</Text>
+            </TouchableHighlight>
+          </View>
+        }
+      </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
   mainContent: {
+    flex: 1
+  },
+  introButtonsContainer: {
     flex: 1,
-    alignItems: 'center',
+    flexDirection: 'row',
+    backgroundColor: '#fd746c',
+    paddingBottom: 25
+  },
+  buttonContainer: {
+    flex: 1,
     justifyContent: 'center',
+    alignItems: 'center'
   },
-  logoImage: {
-    width: 150,
-    height: 150,
-    marginBottom: 10
-  },
-  logoTitle: {
+  buttonTitle: {
     color: 'white',
-    fontSize: 32,
+    fontSize: 20,
     fontFamily: 'Righteous'
   }
 });
