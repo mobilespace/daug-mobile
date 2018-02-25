@@ -34,7 +34,7 @@ exp ios
 ### TODO
 
 - [ ] Design & build an Intro Screen
-  - [ ] :star: **Bonus:** Add [Snap Carousel] with [Lottie animations] to Intro Screen
+  - [ ] :star: **Bonus:** Add [Snap Carousel]() with [Lottie animations]() to Intro Screen
 - [ ] Design & build an Signup Screen
   - [ ] :star: **Bonus:** Add buttons to sign up with Facebook & Twitter
 - [ ] Design & build an Login Screen
@@ -47,7 +47,7 @@ exp ios
 
 ### Demo
 
-![intro_screen]('./screenshots/intro_screen.png')
+![intro_screen](screenshots/intro_screen.png)
 
 ## Submission
 
