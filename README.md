@@ -33,14 +33,17 @@ exp ios
 
 ## Designs
 
-App layout primarily based on Instagram's UI KIT as seen (here)[https://www.sketchappsources.com/free-source/2023-instagram-based-ui-kit-sketch-freebie-resource.html]. You can download the Sketch file and look at all the screens.
-
 Intro, Login & Sign up screen based on Robinhood App.
+
+Profile screen based on Instagram.
+
+Social feed screen based on Facebook.
 
 ### Other design ideas
 
 - [Login screen designs on Pinterest](https://www.pinterest.com/timoa/mobile-ui-logins/?lp=true)
 - [Mobile UI on Dribble](https://dribbble.com/search?q=mobile+UI)
+- [Instagram UI kit - Sketch file](https://www.sketchappsources.com/free-source/2023-instagram-based-ui-kit-sketch-freebie-resource.html)
 
 ### TODO
 
@@ -54,7 +57,7 @@ Intro, Login & Sign up screen based on Robinhood App.
   - [ ] :star: **Bonus:** Add the Logout button
 - [ ] Design & build an Social Feed Screen with [Mock Data]()
   - [ ] :star: **Bonus:** Add the Logout button
-- [ ] Attach screenshots to readme - each should be it’s own component
+- [ ] Attach screenshots/gif to readme
 
 ### Demo
 <div stlye={{display: flex; flex-direction: row}}>
