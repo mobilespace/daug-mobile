@@ -46,8 +46,9 @@ exp ios
 - [ ] Attach screenshots to readme - each should be it’s own component
 
 ### Demo
-
-![intro_screen](screenshots/intro_screen.png)
+<div stlye={{display: flex; flex-direction: row}}>
+  <img src="'./screenshots/intro_screen.png" width="300" />
+</div>
 
 ## Submission
 
