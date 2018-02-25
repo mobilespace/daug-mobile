@@ -60,14 +60,21 @@ Social feed screen based on Facebook.
 - [ ] Attach screenshots/gif to readme
 
 ### Demo
-<div stlye={{display: flex; flex-direction: row}}>
+<div style={{display: flex; flex-direction: row}}>
   <img src="screenshots/intro_screen.png" width="250" />
+</div>
+<div style={{display: flex; flex-direction: row}}>
   <img src="screenshots/login_screen_1.png" width="250" />
   <img src="screenshots/login_screen_2.png" width="250" />
   <img src="screenshots/login_screen_3.png" width="250" />
+</div>
+<div style={{display: flex; flex-direction: row}}>
   <img src="screenshots/signup_screen_1.png" width="250" />
   <img src="screenshots/signup_screen_2.png" width="250" />
   <img src="screenshots/signup_screen_3.png" width="250" />
+</div>
+<div style={{display: flex; flex-direction: row}}>
+  <img src="screenshots/profile_screen.png" width="250" />
 </div>
 
 ## Submission
