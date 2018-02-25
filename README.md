@@ -31,6 +31,17 @@ exp ios
 - Learn how to use mock data for prototyping UI screens
 - Learn how to use NPM libaries such as React Native Elements, Expo & React Native Vector Icons
 
+## Designs
+
+App layout primarily based on Instagram's UI KIT as seen (here)[https://www.sketchappsources.com/free-source/2023-instagram-based-ui-kit-sketch-freebie-resource.html]. You can download the Sketch file and look at all the screens.
+
+Intro, Login & Sign up screen based on Robinhood App.
+
+### Other design ideas
+
+- [Login screen designs on Pinterest](https://www.pinterest.com/timoa/mobile-ui-logins/?lp=true)
+- [Mobile UI on Dribble](https://dribbble.com/search?q=mobile+UI)
+
 ### TODO
 
 - [ ] Design & build an Intro Screen
