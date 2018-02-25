@@ -62,6 +62,9 @@ Intro, Login & Sign up screen based on Robinhood App.
   <img src="screenshots/login_screen_1.png" width="250" />
   <img src="screenshots/login_screen_2.png" width="250" />
   <img src="screenshots/login_screen_3.png" width="250" />
+  <img src="screenshots/signup_screen_1.png" width="250" />
+  <img src="screenshots/signup_screen_2.png" width="250" />
+  <img src="screenshots/signup_screen_3.png" width="250" />
 </div>
 
 ## Submission

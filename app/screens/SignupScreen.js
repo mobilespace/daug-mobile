@@ -74,7 +74,7 @@ export default class SignupScreen extends React.Component {
               onChangeText={name => this.setState({ name })}
               placeholder="Name"
               placeholderTextColor="white"
-              autoCapitalize="none"
+              autoCapitalize="words"
               returnKeyType="next"
               displayError={false}
               errorMessage="Please enter a valid name"
