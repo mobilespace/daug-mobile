@@ -48,14 +48,14 @@ Social feed screen based on Facebook.
 ### TODO
 
 - [x] Design & build an Intro Screen
-  - [ ] :star: **Bonus:** Add [Snap Carousel]() with [Lottie animations]() to Intro Screen
+  - [ ] :star: **Bonus:** Add [Snap Carousel](https://github.com/archriss/react-native-snap-carousel) with [Lottie animations](https://docs.expo.io/versions/latest/sdk/lottie.html) to Intro Screen
 - [x] Design & build an Signup Screen
   - [ ] :star: **Bonus:** Add buttons to sign up with Facebook & Twitter
 - [x] Design & build an Login Screen
   - [ ] :star: **Bonus:** Add buttons to login with Facebook & Twitter
 - [x] Design & build an Profile Screen
   - [x] :star: **Bonus:** Add the Logout button
-- [ ] Design & build an Social Feed Screen with [Mock Data]()
+- [x] Design & build an Social Feed Screen with [Mock Data]()
 - [x] Attach screenshots/gif of screens to `README.MD`
 
 ### Demo
@@ -74,6 +74,11 @@ Social feed screen based on Facebook.
 </div>
 <div style={{display: flex; flex-direction: row}}>
   <img src="screenshots/profile_screen.png" width="250" />
+</div>
+<div style={{display: flex; flex-direction: row}}>
+  <img src="screenshots/social_feed_screen_1.png" width="250" />
+  <img src="screenshots/social_feed_screen_2.png" width="250" />
+  <img src="screenshots/social_feed_screen_3.png" width="250" />
 </div>
 
 ## Submission

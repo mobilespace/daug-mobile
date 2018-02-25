@@ -24,7 +24,7 @@ export default class IntroScreen extends React.Component {
 
     this.state = {
       fontLoaded: false,
-      screen: 'social'
+      screen: null
     };
   }
 
