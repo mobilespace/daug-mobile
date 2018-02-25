@@ -11,6 +11,8 @@ import { Button } from 'react-native-elements';
 
 import IntroSlider from '../components/IntroSlider';
 
+import LoginScreen from './LoginScreen';
+
 import LOGO_IMAGE from '../../assets/daug_logo.png';
 
 export default class IntroScreen extends React.Component {
@@ -19,6 +21,7 @@ export default class IntroScreen extends React.Component {
 
     this.state = {
       fontLoaded: false,
+      screen: null
     };
   }
 
@@ -30,29 +33,45 @@ export default class IntroScreen extends React.Component {
     this.setState({ fontLoaded: true });
   }
 
+  onButtonPressed(type) {
+    this.setState({ screen: type })
+  }
+
+  renderContent() {
+    const { screen } = this.state
+
+    if (screen === 'login') {
+      return <LoginScreen />
+    } else {
+      return (
+        <View style={styles.mainContent}>
+          <IntroSlider />
+          {this.state.fontLoaded &&
+            <View style={styles.introButtonsContainer}>
+              <TouchableHighlight
+                activeOpacity={0.5}
+                underlayColor="rgba(0, 0, 0, 0)"
+                style={styles.buttonContainer}
+                onPress={this.onButtonPressed.bind(this, 'login')}>
+                <Text style={styles.buttonTitle}>Login</Text>
+              </TouchableHighlight>
+              <TouchableHighlight
+                activeOpacity={0.5}
+                underlayColor="rgba(0, 0, 0, 0)"
+                style={styles.buttonContainer}
+                onPress={this.onButtonPressed.bind(this, 'signup')}>
+                <Text style={styles.buttonTitle}>Sign Up</Text>
+              </TouchableHighlight>
+            </View>
+          }
+        </View>
+      )
+    }
+  }
+
   render() {
     return (
-      <View style={styles.mainContent}>
-        <IntroSlider />
-        {this.state.fontLoaded &&
-          <View style={styles.introButtonsContainer}>
-            <TouchableHighlight
-              activeOpacity={0.5}
-              underlayColor="rgba(0, 0, 0, 0)"
-              style={styles.buttonContainer}
-              onPress={() => console.log('Login pressed')}>
-              <Text style={styles.buttonTitle}>Login</Text>
-            </TouchableHighlight>
-            <TouchableHighlight
-              activeOpacity={0.5}
-              underlayColor="rgba(0, 0, 0, 0)"
-              style={styles.buttonContainer}
-              onPress={() => console.log('Signup pressed')}>
-              <Text style={styles.buttonTitle}>Sign Up</Text>
-            </TouchableHighlight>
-          </View>
-        }
-      </View>
+      this.renderContent()
     );
   }
 }
