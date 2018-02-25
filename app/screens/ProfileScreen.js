@@ -67,7 +67,7 @@ export default class ProfileScreen extends React.Component {
                   </View>
                   <View style={styles.profileEditButtonContainer}>
                     <Button text="Edit Profile"
-                      containerStyle={{ marginBottom: 20 }}
+                      containerStyle={{ marginBottom: 10 }}
                       buttonStyle={styles.editProfileButton}
                       textStyle={styles.editProfileText}
                     />

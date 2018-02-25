@@ -14,6 +14,7 @@ import IntroSlider from '../components/IntroSlider';
 import LoginScreen from './LoginScreen';
 import SignupScreen from './SignupScreen';
 import ProfileScreen from './ProfileScreen';
+import SocialFeedScreen from './SocialFeedScreen';
 
 import LOGO_IMAGE from '../../assets/daug_logo.png';
 
@@ -23,7 +24,7 @@ export default class IntroScreen extends React.Component {
 
     this.state = {
       fontLoaded: false,
-      screen: 'profile'
+      screen: 'social'
     };
   }
 
@@ -48,6 +49,8 @@ export default class IntroScreen extends React.Component {
       return <SignupScreen />
     } else if (screen === 'profile') {
       return <ProfileScreen />
+    } else if (screen === 'social') {
+      return <SocialFeedScreen />
     } else {
       return (
         <View style={styles.mainContent}>
