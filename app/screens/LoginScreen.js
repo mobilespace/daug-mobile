@@ -13,6 +13,8 @@ import { SimpleLineIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 
 import IntroSlider from '../components/IntroSlider';
 
+import { ENV_URL } from '../utils/helpers';
+
 import LOGO_IMAGE from '../../assets/daug_logo.png';
 
 export default class LoginScreen extends React.Component {
@@ -22,7 +24,8 @@ export default class LoginScreen extends React.Component {
     this.state = {
       fontLoaded: false,
       email: '',
-      password: ''
+      password: '',
+      isLoading: false
     };
   }
 
@@ -34,19 +37,65 @@ export default class LoginScreen extends React.Component {
     this.setState({ fontLoaded: true });
   }
 
-  loginButtonPressed() {
-    const { email, password } = this.state;
+  async loginButtonPressed() {
+    this.setState({ isLoading: true })
 
-    return (
-      Alert.alert(
-        'Success!',
-        `Email: ${email} & Password: ${password}`,
-        [
-          { text: 'OK', onPress: () => console.log('OK Pressed') }
-        ],
-        { cancelable: false }
-      )
-    )
+    const { email, password } = this.state
+
+    var details = {
+      'email': email,
+      'password': password
+    };
+
+    var formBody = [];
+
+    for (var property in details) {
+      var encodedKey = encodeURIComponent(property);
+      var encodedValue = encodeURIComponent(details[property]);
+
+      formBody.push(encodedKey + "=" + encodedValue);
+    }
+
+    formBody = formBody.join("&");
+
+    try {
+      let response = await fetch(`${ENV_URL}/auth/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+        },
+        body: formBody
+      });
+
+      let responseJSON = null
+
+      if (response.status === 201) {
+        responseJSON = await response.json();
+
+        console.log(responseJSON)
+
+        this.setState({ isLoading: false })
+        Alert.alert(
+          'Logged In!',
+          'You have successfully logged in!',
+          [
+            { text: "Continue", onPress: () => console.log("logged in!") }
+          ],
+          { cancelable: false }
+        )
+      } else {
+        responseJSON = await response.json();
+        const error = responseJSON.message
+
+        this.setState({ isLoading: false, error })
+
+        Alert.alert('Log in failed!', `Unable to login.. ${error}!`)
+      }
+    } catch (error) {
+      this.setState({ isLoading: false, error })
+
+      Alert.alert('Log in failed!', 'Unable to login. Please try again later')
+    }
   }
 
   loginValid() {
@@ -56,7 +105,7 @@ export default class LoginScreen extends React.Component {
   }
 
   render() {
-    const { email, password } = this.state
+    const { email, password, isLoading } = this.state
 
     return (
       <LinearGradient
@@ -116,6 +165,7 @@ export default class LoginScreen extends React.Component {
             <Button
               style={styles.buttonView}
               text="Login"
+              loading={isLoading}
               buttonStyle={[styles.loginButtonStyle, !this.loginValid() && { backgroundColor: 'gray'}]}
               disabled={!this.loginValid()}
               onPress={this.loginButtonPressed.bind(this)}

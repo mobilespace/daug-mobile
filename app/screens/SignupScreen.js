@@ -11,6 +11,8 @@ import { Font, LinearGradient } from 'expo';
 import { Button, Input } from 'react-native-elements';
 import { SimpleLineIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 
+import { ENV_URL } from '../utils/helpers';
+
 export default class SignupScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -19,7 +21,8 @@ export default class SignupScreen extends React.Component {
       fontLoaded: false,
       name: '',
       email: '',
-      password: ''
+      password: '',
+      isLoading: false
     };
   }
 
@@ -31,19 +34,66 @@ export default class SignupScreen extends React.Component {
     this.setState({ fontLoaded: true });
   }
 
-  signupButtonPressed() {
-    const { name, email, password } = this.state;
+  async signupButtonPressed() {
+    this.setState({ isLoading: true })
 
-    return (
-      Alert.alert(
-        'Success!',
-        `Name: ${name} & Email: ${email} & Password: ${password}`,
-        [
-          { text: 'OK', onPress: () => console.log('OK Pressed') }
-        ],
-        { cancelable: false }
-      )
-    )
+    const { name, email, password } = this.state
+
+    var details = {
+      'name': name,
+      'email': email,
+      'password': password
+    };
+
+    var formBody = [];
+
+    for (var property in details) {
+      var encodedKey = encodeURIComponent(property);
+      var encodedValue = encodeURIComponent(details[property]);
+
+      formBody.push(encodedKey + "=" + encodedValue);
+    }
+
+    formBody = formBody.join("&");
+
+    try {
+      let response = await fetch(`${ENV_URL}/auth/signup`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+        },
+        body: formBody
+      });
+
+      let responseJSON = null
+
+      if (response.status === 201) {
+        responseJSON = await response.json();
+
+        console.log(responseJSON)
+
+        this.setState({ isLoading: false })
+        Alert.alert(
+          'Logged In!',
+          'You have successfully logged in!',
+          [
+            { text: "Continue", onPress: () => console.log("User created!") }
+          ],
+          { cancelable: false }
+        )
+      } else {
+        responseJSON = await response.json();
+        const error = responseJSON.message
+
+        this.setState({ isLoading: false, error })
+
+        Alert.alert('Log in failed!', `Unable to login.. ${error}!`)
+      }
+    } catch (error) {
+      this.setState({ isLoading: false, response: error })
+
+      Alert.alert('Log in failed!', 'Unable to login. Please try again later')
+    }
   }
 
   signupValid() {
@@ -53,7 +103,7 @@ export default class SignupScreen extends React.Component {
   }
 
   render() {
-    const { name, email, password } = this.state
+    const { name, email, password, isLoading } = this.state
 
     return (
       <LinearGradient
@@ -137,6 +187,7 @@ export default class SignupScreen extends React.Component {
             <Button
               style={styles.buttonView}
               text="Sign Up"
+              loading={isLoading}
               buttonStyle={[styles.loginButtonStyle, !this.signupValid() && { backgroundColor: 'gray' }]}
               disabled={!this.signupValid()}
               onPress={this.signupButtonPressed.bind(this)}
