@@ -14,6 +14,21 @@ import { SimpleLineIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { ENV_URL } from '../utils/helpers';
 
 export default class SignupScreen extends React.Component {
+  static navigationOptions = ({ navigation }) => ({
+    title: "Let's get started",
+    headerTintColor: 'white',
+    headerStyle: {
+      backgroundColor: '#fd746c',
+      borderBottomColor: '#fd746c',
+      borderBottomWidth: 0,
+      elevation: null,
+    },
+    headerTitleStyle: {
+      fontSize: 20,
+      fontFamily: 'Righteous'
+    },
+  });
+
   constructor(props) {
     super(props);
 

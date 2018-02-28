@@ -21,12 +21,20 @@ import { ENV_URL } from '../utils/helpers';
 import LOGO_IMAGE from '../../assets/daug_logo.png';
 
 export default class IntroScreen extends React.Component {
+  static navigationOptions = ({ navigation }) => ({
+    headerStyle: {
+      backgroundColor: '#fd746c',
+      borderBottomColor: '#fd746c',
+      borderBottomWidth: 0,
+      elevation: null
+    }
+  });
+
   constructor(props) {
     super(props);
 
     this.state = {
-      fontLoaded: false,
-      screen: null
+      fontLoaded: false
     };
   }
 
@@ -46,72 +54,44 @@ export default class IntroScreen extends React.Component {
       if (response.status === 200) {
         responseJSON = await response.json();
 
-        console.log('====================================');
         console.log(responseJSON);
-        console.log('====================================');
       } else {
         responseJSON = await response.json();
         const error = responseJSON.message
 
-        console.log('====================================');
         console.log("failed" + error);
-        console.log('====================================');
       }
     } catch (error) {
-      console.log('====================================');
       console.log("failed" + error);
-      console.log('====================================');
     }
 
     this.setState({ fontLoaded: true });
   }
 
-  onButtonPressed(type) {
-    this.setState({ screen: type })
-  }
-
-  renderContent() {
-    const { screen } = this.state
-
-    if (screen === 'login') {
-      return <LoginScreen />
-    } else if (screen === 'signup') {
-      return <SignupScreen />
-    } else if (screen === 'profile') {
-      return <ProfileScreen />
-    } else if (screen === 'social') {
-      return <SocialFeedScreen />
-    } else {
-      return (
-        <View style={styles.mainContent}>
-          <IntroSlider />
-          {this.state.fontLoaded &&
-            <View style={styles.introButtonsContainer}>
-              <TouchableHighlight
-                activeOpacity={0.5}
-                underlayColor="rgba(0, 0, 0, 0)"
-                style={styles.buttonContainer}
-                onPress={this.onButtonPressed.bind(this, 'login')}>
-                <Text style={styles.buttonTitle}>Login</Text>
-              </TouchableHighlight>
-              <TouchableHighlight
-                activeOpacity={0.5}
-                underlayColor="rgba(0, 0, 0, 0)"
-                style={styles.buttonContainer}
-                onPress={this.onButtonPressed.bind(this, 'signup')}>
-                <Text style={styles.buttonTitle}>Sign Up</Text>
-              </TouchableHighlight>
-            </View>
-          }
-        </View>
-      )
-    }
-  }
-
   render() {
     return (
-      this.renderContent()
-    );
+      <View style={styles.mainContent}>
+        <IntroSlider />
+        {this.state.fontLoaded &&
+          <View style={styles.introButtonsContainer}>
+            <TouchableHighlight
+              activeOpacity={0.5}
+              underlayColor="rgba(0, 0, 0, 0)"
+              style={styles.buttonContainer}
+              onPress={() => this.props.navigation.navigate('Login')}>
+              <Text style={styles.buttonTitle}>Login</Text>
+            </TouchableHighlight>
+            <TouchableHighlight
+              activeOpacity={0.5}
+              underlayColor="rgba(0, 0, 0, 0)"
+              style={styles.buttonContainer}
+              onPress={() => this.props.navigation.navigate('Signup')}>
+              <Text style={styles.buttonTitle}>Sign Up</Text>
+            </TouchableHighlight>
+          </View>
+        }
+      </View>
+    )
   }
 }
 

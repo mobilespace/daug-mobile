@@ -1,20 +1,11 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
 
-import IntroScreen from './app/screens/IntroScreen';
+import IntroStack from './app/navigation/IntroStack';
 
 export default class App extends React.Component {
   render() {
     return (
-      <View style={styles.container}>
-        <IntroScreen />
-      </View>
+      <IntroStack />
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1
-  }
-});

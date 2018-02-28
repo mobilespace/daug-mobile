@@ -18,6 +18,21 @@ import { ENV_URL } from '../utils/helpers';
 import LOGO_IMAGE from '../../assets/daug_logo.png';
 
 export default class LoginScreen extends React.Component {
+  static navigationOptions = ({ navigation }) => ({
+    title: 'Login to account',
+    headerTintColor: 'white',
+    headerStyle: {
+      backgroundColor: '#fd746c',
+      borderBottomColor: '#fd746c',
+      borderBottomWidth: 0,
+      elevation: null,
+    },
+    headerTitleStyle: {
+      fontSize: 20,
+      fontFamily: 'Righteous'
+    },
+  });
+
   constructor(props) {
     super(props);
 
