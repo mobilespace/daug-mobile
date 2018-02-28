@@ -16,6 +16,8 @@ import SignupScreen from './SignupScreen';
 import ProfileScreen from './ProfileScreen';
 import SocialFeedScreen from './SocialFeedScreen';
 
+import { ENV_URL } from '../utils/helpers';
+
 import LOGO_IMAGE from '../../assets/daug_logo.png';
 
 export default class IntroScreen extends React.Component {
@@ -32,6 +34,34 @@ export default class IntroScreen extends React.Component {
     await Font.loadAsync({
       'Righteous': require('../../assets/fonts/Righteous-Regular.ttf')
     });
+
+    // Simple API call - GET
+    try {
+      let response = await fetch(`${ENV_URL}/auth`, {
+        method: 'GET'
+      });
+
+      let responseJSON = null
+
+      if (response.status === 200) {
+        responseJSON = await response.json();
+
+        console.log('====================================');
+        console.log(responseJSON);
+        console.log('====================================');
+      } else {
+        responseJSON = await response.json();
+        const error = responseJSON.message
+
+        console.log('====================================');
+        console.log("failed" + error);
+        console.log('====================================');
+      }
+    } catch (error) {
+      console.log('====================================');
+      console.log("failed" + error);
+      console.log('====================================');
+    }
 
     this.setState({ fontLoaded: true });
   }
