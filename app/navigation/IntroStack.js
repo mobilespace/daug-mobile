@@ -13,7 +13,7 @@ const IntroStack = StackNavigator({
   },
   Signup: {
     screen: SignupScreen,
-  },
+  }
 });
 
 export default IntroStack;
