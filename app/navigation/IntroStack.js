@@ -6,13 +6,13 @@ import SignupScreen from '../screens/SignupScreen';
 
 const IntroStack = StackNavigator({
   Intro: {
-    screen: IntroScreen,
+    screen: IntroScreen
   },
   Login: {
-    screen: LoginScreen,
+    screen: LoginScreen
   },
   Signup: {
-    screen: SignupScreen,
+    screen: SignupScreen
   }
 });
 

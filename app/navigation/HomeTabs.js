@@ -52,7 +52,7 @@ const HomeTabs = TabNavigator({
       backgroundColor: 'white'
     },
     labelStyle: {
-      fontSize: 12,
+      fontSize: 12
     }
   }
 });
