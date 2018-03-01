@@ -5,7 +5,7 @@ import { TabNavigator } from 'react-navigation';
 import { SimpleLineIcons } from '@expo/vector-icons';
 
 import SocialFeedScreen from '../screens/SocialFeedScreen';
-import ProfileScreen from '../screens/ProfileScreen';
+import ProfileStack from './ProfileStack';
 
 const HomeTabs = TabNavigator({
   SocialFeed: {
@@ -22,7 +22,7 @@ const HomeTabs = TabNavigator({
     }
   },
   Profile: {
-    screen: ProfileScreen,
+    screen: ProfileStack,
     navigationOptions: {
       tabBarLabel: 'Profile',
       tabBarIcon: ({ tintColor }) => (

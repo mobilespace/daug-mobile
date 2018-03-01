@@ -3,22 +3,13 @@ import {
   StyleSheet,
   View,
   Text,
-  Image,
   TouchableHighlight
 } from 'react-native';
-import { Font, LinearGradient } from 'expo';
-import { Button } from 'react-native-elements';
+import { Font } from 'expo';
 
 import IntroSlider from '../components/IntroSlider';
 
-import LoginScreen from './LoginScreen';
-import SignupScreen from './SignupScreen';
-import ProfileScreen from './ProfileScreen';
-import SocialFeedScreen from './SocialFeedScreen';
-
 import { ENV_URL } from '../utils/helpers';
-
-import LOGO_IMAGE from '../../assets/daug_logo.png';
 
 export default class IntroScreen extends React.Component {
   static navigationOptions = ({ navigation }) => ({

@@ -13,6 +13,10 @@ import { Button } from 'react-native-elements';
 import LOGO_IMAGE from '../../assets/daug_logo.png';
 
 export default class ProfileScreen extends React.Component {
+  static navigationOptions = ({ navigation }) => ({
+    header: null
+  });
+
   constructor(props) {
     super(props);
 
@@ -70,6 +74,7 @@ export default class ProfileScreen extends React.Component {
                       containerStyle={{ marginBottom: 10 }}
                       buttonStyle={styles.editProfileButton}
                       textStyle={styles.editProfileText}
+                      onPress={() => this.props.navigation.navigate('EditProfile')}
                     />
                   </View>
                 </View>
