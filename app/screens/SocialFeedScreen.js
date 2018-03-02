@@ -5,7 +5,8 @@ import {
   Text,
   Image,
   ScrollView,
-  FlatList
+  FlatList,
+  TouchableOpacity
 } from 'react-native';
 import { Font, LinearGradient } from 'expo';
 import { Button, Icon } from 'react-native-elements';
@@ -13,6 +14,14 @@ import { Button, Icon } from 'react-native-elements';
 import { SOCIAL_FEED_MOCK_DATA } from '../utils/constants';
 
 export default class SocialFeedScreen extends React.Component {
+  static navigationOptions = ({ navigation }) => ({
+    title: 'Daug',
+    headerTintColor: '#fd746c',
+    headerTitleStyle: {
+      fontSize: 20
+    },
+  });
+
   constructor(props) {
     super(props);
 
@@ -33,15 +42,21 @@ export default class SocialFeedScreen extends React.Component {
 
   renderMemberRow(member) {
     const { commented, liked } = this.state
+    const { navigate } = this.props.navigation
 
     return (
       <View style={styles.postContainer} key={member}>
         <View style={styles.postHeaderContainer}>
-          <Image source={{ url: member.image }} style={styles.avatar} />
+          <TouchableOpacity onPress={() => navigate('Profile', { admin: 'false' })}>
+            <Image source={{ url: member.image }} style={styles.avatar} />
+          </TouchableOpacity>
           <View style={styles.postUsernameLocationContainer}>
-            <View style={[styles.postUsernameView, member.location && { marginTop: 10 }]}>
+            <TouchableOpacity
+              style={[styles.postUsernameView, member.location && { marginTop: 10 }]}
+              onPress={() => navigate('Profile', { admin: 'false' })}
+            >
               <Text style={styles.nameLabel}>{member.name}</Text>
-            </View>
+            </TouchableOpacity>
             {member.location &&
               <View style={styles.postLocationView}>
                 <Text style={styles.locationLabel}>{member.location}</Text>
@@ -49,10 +64,12 @@ export default class SocialFeedScreen extends React.Component {
             }
           </View>
         </View>
-        <View style={styles.postContentContainer}>
-          <Image source={{ url: member.post.image }} style={styles.postImage} resizeMode="cover" />
-          <Text style={styles.postCaption}>{member.post.caption}</Text>
-        </View>
+        <TouchableOpacity onPress={() => navigate('Post')}>
+          <View style={styles.postContentContainer}>
+            <Image source={{ url: member.post.image }} style={styles.postImage} resizeMode="cover" />
+            <Text style={styles.postCaption}>{member.post.caption}</Text>
+          </View>
+        </TouchableOpacity>
         <View style={styles.postFooterContainer}>
           <View style={styles.postDateView}>
             <Text style={styles.postDateText}>{member.post.date}</Text>
@@ -79,10 +96,15 @@ export default class SocialFeedScreen extends React.Component {
   }
 
   render() {
+    const { navigate } = this.props.navigation
+
     return (
       <ScrollView>
         {this.state.fontLoaded &&
           <View style={styles.mainContent}>
+            <TouchableOpacity style={styles.createPostContainer} onPress={() => navigate('CreatePost')}>
+              <Text style={styles.createPostLabel}>Create Post</Text>
+            </TouchableOpacity>
             <FlatList
               data={SOCIAL_FEED_MOCK_DATA}
               extraData={this.state}
@@ -99,14 +121,23 @@ export default class SocialFeedScreen extends React.Component {
 const styles = StyleSheet.create({
   mainContent: {
     flex: 1,
-    backgroundColor: '#DA727E',
-    justifyContent: 'center',
-    marginTop: 50,
-    marginBottom: 50
+    justifyContent: 'center'
+  },
+  createPostContainer: {
+    backgroundColor: '#f9f9f9',
+    height: 50,
+    justifyContent: 'center'
+  },
+  createPostLabel: {
+    fontSize: 18,
+    color: '#DA727E',
+    marginLeft: 10,
+    fontWeight: 'bold',
+    fontFamily: 'Righteous',
+    marginLeft: 20
   },
   postContainer: {
     backgroundColor: 'white',
-    borderTopWidth: 1,
     borderColor: '#aaaaaa',
   },
   postHeaderContainer: {

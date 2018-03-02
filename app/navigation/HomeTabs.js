@@ -4,12 +4,12 @@ import { Platform } from 'react-native';
 import { TabNavigator } from 'react-navigation';
 import { SimpleLineIcons } from '@expo/vector-icons';
 
-import SocialFeedScreen from '../screens/SocialFeedScreen';
+import SocialNavigator from './SocialNavigator';
 import ProfileStack from './ProfileStack';
 
 const HomeTabs = TabNavigator({
-  SocialFeed: {
-    screen: SocialFeedScreen,
+  SocialTab: {
+    screen: SocialNavigator,
     navigationOptions: {
       tabBarLabel: 'Feed',
       tabBarIcon: ({ tintColor }) => (
@@ -21,7 +21,7 @@ const HomeTabs = TabNavigator({
       )
     }
   },
-  Profile: {
+  ProfileTab: {
     screen: ProfileStack,
     navigationOptions: {
       tabBarLabel: 'Profile',
@@ -35,7 +35,7 @@ const HomeTabs = TabNavigator({
     }
   }
 }, {
-  initialRouteName: 'SocialFeed',
+  initialRouteName: 'SocialTab',
   tabBarPosition: 'bottom',
   animationEnabled: Platform.OS === 'ios' ? false : true,
   swipeEnabled: Platform.OS === 'ios' ? false : true,

@@ -60,6 +60,8 @@ export default class IntroScreen extends React.Component {
   }
 
   render() {
+    const { navigate } = this.props.navigation
+
     return (
       <View style={styles.mainContent}>
         <IntroSlider />
@@ -69,14 +71,14 @@ export default class IntroScreen extends React.Component {
               activeOpacity={0.5}
               underlayColor="rgba(0, 0, 0, 0)"
               style={styles.buttonContainer}
-              onPress={() => this.props.navigation.navigate('Login')}>
+              onPress={() => navigate('Login')}>
               <Text style={styles.buttonTitle}>Login</Text>
             </TouchableHighlight>
             <TouchableHighlight
               activeOpacity={0.5}
               underlayColor="rgba(0, 0, 0, 0)"
               style={styles.buttonContainer}
-              onPress={() => this.props.navigation.navigate('Signup')}>
+              onPress={() => navigate('Signup')}>
               <Text style={styles.buttonTitle}>Sign Up</Text>
             </TouchableHighlight>
           </View>
