@@ -9,7 +9,10 @@ const ProfileStack = StackNavigator({
   },
   EditProfile: {
     screen: EditProfileScreen
-  }
+  },
+}, {
+  mode: "modal",
+  initialRouteName: "Profile"
 });
 
 export default ProfileStack;
