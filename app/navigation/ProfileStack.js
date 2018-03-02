@@ -1,18 +1,15 @@
 import { StackNavigator } from 'react-navigation';
 
 import ProfileScreen from '../screens/ProfileScreen';
-import EditProfileScreen from '../screens/EditProfileScreen';
+import PostScreen from '../screens/PostScreen';
 
 const ProfileStack = StackNavigator({
   Profile: {
     screen: ProfileScreen
   },
-  EditProfile: {
-    screen: EditProfileScreen
-  },
-}, {
-  mode: "modal",
-  initialRouteName: "Profile"
+  Post: {
+    screen: PostScreen
+  }
 });
 
 export default ProfileStack;

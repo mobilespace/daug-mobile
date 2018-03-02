@@ -7,32 +7,9 @@ import {
   Image
 } from 'react-native';
 import { Font } from 'expo';
-import { Input } from 'react-native-elements';
+import { Input, Header } from 'react-native-elements';
 
 export default class EditProfileScreen extends React.Component {
-  static navigationOptions = ({ navigation }) => ({
-    title: "Edit Profile",
-    headerTintColor: '#fd746c',
-    headerTitleStyle: {
-      fontSize: 20,
-      fontFamily: 'Righteous'
-    },
-    headerLeft: (
-      <TouchableOpacity onPress={() => navigation.goBack()}>
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', marginHorizontal: 20 }}>
-          <Text style={{ fontSize: 15, fontFamily: 'Righteous' }}>Cancel</Text>
-        </View>
-      </TouchableOpacity>
-    ),
-    headerRight: (
-      <TouchableOpacity onPress={() => navigation.goBack()}>
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', marginHorizontal: 20 }}>
-          <Text style={{ fontSize: 15, fontFamily: 'Righteous' }}>Done</Text>
-        </View>
-      </TouchableOpacity>
-    )
-  });
-
   constructor(props) {
     super(props);
 
@@ -56,56 +33,84 @@ export default class EditProfileScreen extends React.Component {
     const { name, bio, email } = this.state
 
     return (
-      <View style={styles.mainContent}>
-        <View style={styles.photoContainer}>
-          <Image
-            style={styles.profileImage}
-            source={{ url: 'https://thumbs.dreamstime.com/b/dalmatian-puppy-portrait-10524552.jpg' }}
-            resizeMode='cover'
-          />
-          <TouchableOpacity onPress={() => console.log("Change Profile Photo here")}>
-            <Text style={styles.changePhotoLabel}>Change Photo</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.detailsContainer}>
-          <View style={styles.inputContainer}>
-            <Text style={styles.inputLabel}>Name</Text>
-            <Input
-              value={name}
-              onChangeText={name => this.setState({ name })}
-              placeholder="Name"
-              placeholderTextColor="#aaaaaa"
-              autoCapitalize="words"
-              style={styles.inputStyle}
-              containerStyle={{ width: '100%', borderColor: '#aaaaaa' }}
+      <View style={styles.modalContainer}>
+        <Header
+          leftComponent={
+            <TouchableOpacity onPress={() => this.props.navigation.goBack()}>
+              <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                <Text style={{ fontSize: 15, fontFamily: 'Righteous', color: 'black' }}>Cancel</Text>
+              </View>
+            </TouchableOpacity>
+          }
+          centerComponent={{
+            text: 'Create Post',
+            style: {
+              fontSize: 20,
+              fontFamily: 'Righteous',
+              color: '#fd746c'
+            }
+          }}
+          rightComponent={
+            <TouchableOpacity onPress={() => this.props.navigation.goBack()}>
+              <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                <Text style={{ fontSize: 15, fontFamily: 'Righteous', color: 'black' }}>Share</Text>
+              </View>
+            </TouchableOpacity>
+          }
+          innerContainerStyles={{ alignItems: 'center', paddingTop: 30 }}
+          outerContainerStyles={{ height: 90, backgroundColor: 'rgba(245,245,245,1)' }}
+        />
+        <View style={styles.mainContent}>
+          <View style={styles.photoContainer}>
+            <Image
+              style={styles.profileImage}
+              source={{ url: 'https://thumbs.dreamstime.com/b/dalmatian-puppy-portrait-10524552.jpg' }}
+              resizeMode='cover'
             />
+            <TouchableOpacity onPress={() => console.log("Change Profile Photo here")}>
+              <Text style={styles.changePhotoLabel}>Change Photo</Text>
+            </TouchableOpacity>
           </View>
-          <View style={[styles.inputContainer, { marginBottom: 10 }]}>
-            <Text style={styles.inputLabel}>Bio</Text>
-            <Input
-              value={bio}
-              onChangeText={bio => this.setState({ bio })}
-              placeholder="Bio"
-              placeholderTextColor="#aaaaaa"
-              autoCapitalize="sentences"
-              style={styles.inputStyle}
-              containerStyle={{ width: '100%', borderColor: '#aaaaaa' }}
-            />
+          <View style={styles.detailsContainer}>
+            <View style={styles.inputContainer}>
+              <Text style={styles.inputLabel}>Name</Text>
+              <Input
+                value={name}
+                onChangeText={name => this.setState({ name })}
+                placeholder="Name"
+                placeholderTextColor="#aaaaaa"
+                autoCapitalize="words"
+                style={styles.inputStyle}
+                containerStyle={{ width: '100%', borderColor: '#aaaaaa' }}
+              />
+            </View>
+            <View style={[styles.inputContainer, { marginBottom: 10 }]}>
+              <Text style={styles.inputLabel}>Bio</Text>
+              <Input
+                value={bio}
+                onChangeText={bio => this.setState({ bio })}
+                placeholder="Bio"
+                placeholderTextColor="#aaaaaa"
+                autoCapitalize="sentences"
+                style={styles.inputStyle}
+                containerStyle={{ width: '100%', borderColor: '#aaaaaa' }}
+              />
+            </View>
           </View>
-        </View>
-        <Text style={styles.sectionHeaderText}>PRIVATE INFORMATION</Text>
-        <View style={styles.privateDetailsContainer}>
-          <View style={[styles.inputContainer, { marginVertical: 10 }]}>
-            <Text style={styles.inputLabel}>Email</Text>
-            <Input
-              value={email}
-              onChangeText={email => this.setState({ email })}
-              placeholder="Email"
-              placeholderTextColor="#aaaaaa"
-              autoCapitalize="none"
-              style={styles.inputStyle}
-              containerStyle={{ width: '100%', borderColor: '#aaaaaa' }}
-            />
+          <Text style={styles.sectionHeaderText}>PRIVATE INFORMATION</Text>
+          <View style={styles.privateDetailsContainer}>
+            <View style={[styles.inputContainer, { marginVertical: 10 }]}>
+              <Text style={styles.inputLabel}>Email</Text>
+              <Input
+                value={email}
+                onChangeText={email => this.setState({ email })}
+                placeholder="Email"
+                placeholderTextColor="#aaaaaa"
+                autoCapitalize="none"
+                style={styles.inputStyle}
+                containerStyle={{ width: '100%', borderColor: '#aaaaaa' }}
+              />
+            </View>
           </View>
         </View>
       </View>
@@ -114,6 +119,9 @@ export default class EditProfileScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  modalContainer: {
+    flex: 1
+  },
   mainContent: {
     flex: 1
   },

@@ -14,7 +14,6 @@ import LOGO_IMAGE from '../../assets/daug_logo.png';
 
 export default class ProfileScreen extends React.Component {
   static navigationOptions = ({ navigation }) => ({
-    header: null
   });
 
   constructor(props) {
