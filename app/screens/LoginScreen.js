@@ -56,6 +56,7 @@ export default class LoginScreen extends React.Component {
     this.setState({ isLoading: true })
 
     const { email, password } = this.state
+    const { navigate } = this.props.navigation
 
     var details = {
       'email': email,
@@ -94,7 +95,7 @@ export default class LoginScreen extends React.Component {
           'Logged In!',
           'You have successfully logged in!',
           [
-            { text: "Continue", onPress: () => console.log("logged in!") }
+            { text: "Continue", onPress: () => navigate('HomeTabs') }
           ],
           { cancelable: false }
         )

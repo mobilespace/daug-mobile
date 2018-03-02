@@ -34,6 +34,8 @@ export default class ProfileScreen extends React.Component {
   }
 
   render() {
+    const { navigate } = this.props.navigation
+
     return (
       <ScrollView>
         {this.state.fontLoaded &&
@@ -74,7 +76,7 @@ export default class ProfileScreen extends React.Component {
                       containerStyle={{ marginBottom: 10 }}
                       buttonStyle={styles.editProfileButton}
                       textStyle={styles.editProfileText}
-                      onPress={() => this.props.navigation.navigate('EditProfile')}
+                      onPress={() => navigate('EditProfile')}
                     />
                   </View>
                 </View>
@@ -93,6 +95,7 @@ export default class ProfileScreen extends React.Component {
                 text="LOGOUT"
                 buttonStyle={styles.logoutButton}
                 textStyle={styles.logoutText}
+                onPress={() => navigate('IntroStack')}
               />
             </View>
           </View>

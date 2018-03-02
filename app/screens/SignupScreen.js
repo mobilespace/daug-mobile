@@ -53,6 +53,7 @@ export default class SignupScreen extends React.Component {
     this.setState({ isLoading: true })
 
     const { name, email, password } = this.state
+    const { navigate } = this.props.navigation
 
     var details = {
       'name': name,
@@ -92,7 +93,7 @@ export default class SignupScreen extends React.Component {
           'Logged In!',
           'You have successfully logged in!',
           [
-            { text: "Continue", onPress: () => console.log("User created!") }
+            { text: "Continue", onPress: () => navigate('HomeTabs') }
           ],
           { cancelable: false }
         )
