@@ -149,7 +149,6 @@ export default class ProfileScreen extends React.Component {
               </View>
             </View>
             <Text style={styles.sectionHeaderText}>{user.posts ? user.posts.length : 'NO'} POSTS</Text>
-            {user.posts && this.renderPosts()}
             {
               !isHeaderShow &&
               <View style={styles.contentViewContainer}>
