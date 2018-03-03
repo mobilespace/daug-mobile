@@ -49,13 +49,13 @@ Social Feed screen is based on **Facebook**.
 
 - [x] Design & build an Intro Screen
   - [ ] :star: **Bonus:** Add [Snap Carousel](https://github.com/archriss/react-native-snap-carousel) with [Lottie animations](https://docs.expo.io/versions/latest/sdk/lottie.html) to Intro Screen
-- [x] Design & build an Signup Screen
+- [x] Design & build a Signup Screen
   - [ ] :star: **Bonus:** Add buttons to sign up with Facebook & Twitter
-- [x] Design & build an Login Screen
+- [x] Design & build a Login Screen
   - [ ] :star: **Bonus:** Add buttons to login with Facebook & Twitter
-- [x] Design & build an Profile Screen
+- [x] Design & build a Profile Screen
   - [x] :star: **Bonus:** Add the Logout button
-- [x] Design & build an Social Feed Screen with [Mock Data](https://raw.githubusercontent.com/mobilespace/daug-mobile/master/app/utils/constants.js?token=AHejrmtQeRKU4ntCxaYLoNiWDlF-kQdKks5am8vHwA%3D%3D)
+- [x] Design & build a Social Feed Screen with [Mock Data](https://raw.githubusercontent.com/mobilespace/daug-mobile/master/app/utils/constants.js?token=AHejrmtQeRKU4ntCxaYLoNiWDlF-kQdKks5am8vHwA%3D%3D)
 - [x] Attach screenshots/gif of screens to `README.MD`
 
 ### Screenshots
@@ -101,8 +101,8 @@ Social Feed screen is based on **Facebook**.
 - [x] Setup a **RootNavigator** (using StackNavigator) with the **IntroStack** & **HomeTabs** with `mode: "modal"`
 - [x] Design & build an Edit Profile Screen
 - [x] Setup a **ProfileStack** (using StackNavigator) for the Profile Screen (root), Post Details Screen (push) & Edit Profile Screen (modal) with mode: "modal" and custom RNE header component
-- [x] Design & build an Post Details Screen
-- [x] Design & build an Create Post Screen
+- [x] Design & build a Post Details Screen
+- [x] Design & build a Create Post Screen
 - [x] Setup a **SocialStack** (using StackNavigator) for the Social Feed Screen (root), Post Details Screen (push) & Create Post Screen (modal) with mode: "modal" and custom RNE header component
 - [ ] :star: **Bonus:** Display Posts on ProfileScreen
 - [ ] :star: **Bonus:** Setup a **HomeNavigator**(using DrawerNavigator) with the **HomeTabs** (as root) and update **RootNavigator** to use **HomeNavigator** instead of **HomeTabs**
