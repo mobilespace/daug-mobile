@@ -90,7 +90,7 @@ export default class PostScreen extends React.Component {
             <View style={styles.postUsernameLocationContainer}>
               <TouchableOpacity
                 style={[styles.postUsernameView, member.location && { marginTop: 10 }]}
-                onPress={() => navigate('Profile', { header: true, user: member.user })}
+                onPress={() => navigate('Profile', { isHeaderShow: true, user: member.user })}
               >
                 <Text style={styles.nameLabel}>{member.user.name}</Text>
               </TouchableOpacity>
