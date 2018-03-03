@@ -1,6 +1,6 @@
 # Daug mobile app
 
-This repo is the mobile app for Daug.
+This repo is the mobile app for Daug. It was built as part of the [MobileSpace](http://mobilespace.xyz/) [Season 2](https://github.com/mobilespace/Season2#season-2---looking-ahead) course by [Monte Thakkar](https://github.com/monte9/).
 
 ## What's Daug?
 
@@ -35,7 +35,6 @@ Social Feed screen is based on **Facebook**.
 - [Login screen designs on Pinterest](https://www.pinterest.com/timoa/mobile-ui-logins/?lp=true)
 - [Mobile UI on Dribble](https://dribbble.com/search?q=mobile+UI)
 - [Instagram UI kit - Sketch file](https://www.sketchappsources.com/free-source/2023-instagram-based-ui-kit-sketch-freebie-resource.html)
-
 
 ## Assignment #1
 
@@ -101,13 +100,13 @@ Social Feed screen is based on **Facebook**.
 - [ ] Setup a **HomeTabs** (using TabNavigator) for the Social Feed Screen (default) and Profile Screen
 - [ ] Setup a **RootNavigator** (using StackNavigator) with the **IntroStack** & **HomeTabs** with `mode: "modal"`
 - [ ] Design & build an Edit Profile Screen
-- [ ] Setup a **ProfileStack** (using StackNavigator) for the Profile Screen (root) and Edit Profile Screen (push)
+- [ ] Setup a **ProfileStack** (using StackNavigator) for the Profile Screen (root), Post Details Screen (push) & Edit Profile Screen (modal) with mode: "modal" and custom RNE header component
 - [ ] Design & build an Post Details Screen
 - [ ] Design & build an Create Post Screen
-- [ ] Setup a **SocialStack** (using StackNavigator) for the Social Feed Screen (root), Post Details Screen (push) & Create Post Screen (push)
+- [ ] Setup a **SocialStack** (using StackNavigator) for the Social Feed Screen (root), Post Details Screen (push) & Create Post Screen (modal) with mode: "modal" and custom RNE header component
+- [ ] :star: **Bonus:** Display Posts on ProfileScreen
 - [ ] :star: **Bonus:** Setup a **HomeNavigator**(using DrawerNavigator) with the **HomeTabs** (as root) and update **RootNavigator** to use **HomeNavigator** instead of **HomeTabs**
-- [ ] :star: **Bonus:** Use [SafeAreaView](https://reactnavigation.org/docs/handling-iphonex.html) on each screen to support iPhone X
-- [ ] Attach working gif of navigation to `README.MD`
+- [ ] Add working gif of app to `README.MD`
 
 ### Demo
 
