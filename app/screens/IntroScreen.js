@@ -3,7 +3,8 @@ import {
   StyleSheet,
   View,
   Text,
-  TouchableHighlight
+  TouchableHighlight,
+  Platform
 } from 'react-native';
 import { Font } from 'expo';
 
@@ -96,7 +97,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     backgroundColor: '#fd746c',
-    paddingBottom: 25
+    paddingBottom: Platform.OS === 'ios' ? 25 : 10
   },
   buttonContainer: {
     flex: 1,

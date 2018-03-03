@@ -14,6 +14,7 @@ import LOGO_IMAGE from '../../assets/daug_logo.png';
 
 export default class ProfileScreen extends React.Component {
   static navigationOptions = ({ navigation }) => ({
+    header: null
   });
 
   constructor(props) {
@@ -43,7 +44,7 @@ export default class ProfileScreen extends React.Component {
               <View style={styles.headerBannerViewContainer}>
                 <Image
                   style={styles.bannerImage}
-                  source={{ url: 'http://puppytoob.com/wp-content/uploads/2015/05/dalmatian-1024x683.jpg' }}
+                  source={{ uri: 'http://puppytoob.com/wp-content/uploads/2015/05/dalmatian-1024x683.jpg' }}
                   resizeMode='cover'
                 />
               </View>
@@ -51,7 +52,7 @@ export default class ProfileScreen extends React.Component {
                 <View style={styles.profileImageContainer}>
                   <Image
                     style={styles.profileImage}
-                    source={{ url: 'https://thumbs.dreamstime.com/b/dalmatian-puppy-portrait-10524552.jpg' }}
+                    source={{ uri: 'https://thumbs.dreamstime.com/b/dalmatian-puppy-portrait-10524552.jpg' }}
                     resizeMode='cover'
                   />
                 </View>

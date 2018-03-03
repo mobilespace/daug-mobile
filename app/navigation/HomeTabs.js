@@ -16,7 +16,7 @@ const HomeTabs = TabNavigator({
         <SimpleLineIcons
           name='layers'
           color={tintColor}
-          size={25}
+          size={Platform.OS === 'ios' ? 22 : 25}
         />
       )
     }
@@ -29,7 +29,7 @@ const HomeTabs = TabNavigator({
         <SimpleLineIcons
           name='user'
           color={tintColor}
-          size={25}
+          size={Platform.OS === 'ios' ? 22 : 25}
         />
       )
     }
@@ -46,7 +46,7 @@ const HomeTabs = TabNavigator({
     inactiveTintColor: '#999999',
     style: {
       backgroundColor: '#ffffff',
-      padding: 5
+      padding: Platform.OS === 'ios' ? 5 : 0,
     },
     indicatorStyle: {
       backgroundColor: 'white'

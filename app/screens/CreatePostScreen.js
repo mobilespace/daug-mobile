@@ -55,7 +55,7 @@ export default class CreatePostScreen extends React.Component {
       <View style={styles.modalContainer}>
         <Header
           leftComponent={
-            <TouchableOpacity onPress={() => goBack()}>
+            <TouchableOpacity onPress={() => goBack()} style={{ flex: 1 }}>
               <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                 <Text style={{ fontSize: 15, fontFamily: 'Righteous', color: 'black' }}>Cancel</Text>
               </View>
@@ -70,7 +70,7 @@ export default class CreatePostScreen extends React.Component {
             }
           }}
           rightComponent={
-            <TouchableOpacity onPress={() => goBack()}>
+            <TouchableOpacity onPress={() => goBack()} style={{ flex: 1 }}>
               <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                 <Text style={{ fontSize: 15, fontFamily: 'Righteous', color: 'black' }}>Share</Text>
               </View>

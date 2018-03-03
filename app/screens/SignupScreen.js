@@ -201,13 +201,13 @@ export default class SignupScreen extends React.Component {
               }}
             />
             <Button
-              style={styles.buttonView}
               text="Sign Up"
               loading={isLoading}
               buttonStyle={[styles.loginButtonStyle, !this.signupValid() && { backgroundColor: 'gray' }]}
               disabled={!this.signupValid()}
               onPress={this.signupButtonPressed.bind(this)}
               textStyle={styles.buttonTextStyle}
+              containerStyle={{ marginTop: 20 }}
             />
           </View>
         }
@@ -234,9 +234,6 @@ const styles = StyleSheet.create({
     borderColor: 'white',
     height: 45,
     marginVertical: 10,
-  },
-  buttonView: {
-    marginTop: 40
   },
   loginButtonStyle: {
     width: 220,

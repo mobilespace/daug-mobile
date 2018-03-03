@@ -47,8 +47,8 @@ export default class SocialFeedScreen extends React.Component {
     return (
       <View style={styles.postContainer} key={member}>
         <View style={styles.postHeaderContainer}>
-          <TouchableOpacity onPress={() => navigate('Profile', { admin: 'false' })}>
-            <Image source={{ url: member.image }} style={styles.avatar} />
+          <TouchableOpacity onPress={() => navigate('Profile', { admin: 'false' })} activeOpacity={0.8}>
+            <Image source={{ uri: member.image }} style={styles.avatar} />
           </TouchableOpacity>
           <View style={styles.postUsernameLocationContainer}>
             <TouchableOpacity
@@ -64,9 +64,9 @@ export default class SocialFeedScreen extends React.Component {
             }
           </View>
         </View>
-        <TouchableOpacity onPress={() => navigate('Post')}>
+        <TouchableOpacity onPress={() => navigate('Post')} activeOpacity={1}>
           <View style={styles.postContentContainer}>
-            <Image source={{ url: member.post.image }} style={styles.postImage} resizeMode="cover" />
+            <Image source={{ uri: member.post.image }} style={styles.postImage} resizeMode="cover" />
             <Text style={styles.postCaption}>{member.post.caption}</Text>
           </View>
         </TouchableOpacity>

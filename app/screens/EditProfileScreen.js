@@ -36,14 +36,14 @@ export default class EditProfileScreen extends React.Component {
       <View style={styles.modalContainer}>
         <Header
           leftComponent={
-            <TouchableOpacity onPress={() => this.props.navigation.goBack()}>
+            <TouchableOpacity onPress={() => this.props.navigation.goBack()} style={{ flex: 1 }}>
               <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                 <Text style={{ fontSize: 15, fontFamily: 'Righteous', color: 'black' }}>Cancel</Text>
               </View>
             </TouchableOpacity>
           }
           centerComponent={{
-            text: 'Create Post',
+            text: 'Edit Profile',
             style: {
               fontSize: 20,
               fontFamily: 'Righteous',
@@ -51,9 +51,9 @@ export default class EditProfileScreen extends React.Component {
             }
           }}
           rightComponent={
-            <TouchableOpacity onPress={() => this.props.navigation.goBack()}>
+            <TouchableOpacity onPress={() => this.props.navigation.goBack()} style={{ flex: 1 }}>
               <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                <Text style={{ fontSize: 15, fontFamily: 'Righteous', color: 'black' }}>Share</Text>
+                <Text style={{ fontSize: 15, fontFamily: 'Righteous', color: 'black' }}>Done</Text>
               </View>
             </TouchableOpacity>
           }
@@ -64,7 +64,7 @@ export default class EditProfileScreen extends React.Component {
           <View style={styles.photoContainer}>
             <Image
               style={styles.profileImage}
-              source={{ url: 'https://thumbs.dreamstime.com/b/dalmatian-puppy-portrait-10524552.jpg' }}
+              source={{ uri: 'https://thumbs.dreamstime.com/b/dalmatian-puppy-portrait-10524552.jpg' }}
               resizeMode='cover'
             />
             <TouchableOpacity onPress={() => console.log("Change Profile Photo here")}>

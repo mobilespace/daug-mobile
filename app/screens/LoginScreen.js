@@ -179,13 +179,13 @@ export default class LoginScreen extends React.Component {
               }}
             />
             <Button
-              style={styles.buttonView}
               text="Login"
               loading={isLoading}
               buttonStyle={[styles.loginButtonStyle, !this.loginValid() && { backgroundColor: 'gray'}]}
               disabled={!this.loginValid()}
               onPress={this.loginButtonPressed.bind(this)}
               textStyle={styles.buttonTextStyle}
+              containerStyle={{marginTop: 20}}
             />
           </View>
         }
@@ -212,9 +212,6 @@ const styles = StyleSheet.create({
     borderColor: 'white',
     height: 45,
     marginVertical: 10,
-  },
-  buttonView: {
-    marginTop: 40
   },
   loginButtonStyle: {
     width: 220,
