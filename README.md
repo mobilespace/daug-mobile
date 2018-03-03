@@ -92,18 +92,18 @@ Social Feed screen is based on **Facebook**.
 
 ### TODO
 
-- [ ] Understand the 3 main navigation patterns for mobile apps:
-  - [ ] [StackNavigator](https://reactnavigation.org/docs/hello-react-navigation.html#creating-a-stacknavigator)
-  - [ ] [TabNavigator](https://reactnavigation.org/docs/tab-based-navigation.html)
-  - [ ] [DrawerNavigator](https://reactnavigation.org/docs/drawer-based-navigation.html)
-- [ ] Setup a **IntroStack** (using StackNavigator) for the Intro Screen (root), Login Screen (push) & Sign Up Screen (push)
-- [ ] Setup a **HomeTabs** (using TabNavigator) for the Social Feed Screen (default) and Profile Screen
-- [ ] Setup a **RootNavigator** (using StackNavigator) with the **IntroStack** & **HomeTabs** with `mode: "modal"`
-- [ ] Design & build an Edit Profile Screen
-- [ ] Setup a **ProfileStack** (using StackNavigator) for the Profile Screen (root), Post Details Screen (push) & Edit Profile Screen (modal) with mode: "modal" and custom RNE header component
-- [ ] Design & build an Post Details Screen
-- [ ] Design & build an Create Post Screen
-- [ ] Setup a **SocialStack** (using StackNavigator) for the Social Feed Screen (root), Post Details Screen (push) & Create Post Screen (modal) with mode: "modal" and custom RNE header component
+- [x] Understand the 3 main navigation patterns for mobile apps:
+  - [x] [StackNavigator](https://reactnavigation.org/docs/hello-react-navigation.html#creating-a-stacknavigator)
+  - [x] [TabNavigator](https://reactnavigation.org/docs/tab-based-navigation.html)
+  - [x] [DrawerNavigator](https://reactnavigation.org/docs/drawer-based-navigation.html)
+- [x] Setup a **IntroStack** (using StackNavigator) for the Intro Screen (root), Login Screen (push) & Sign Up Screen (push)
+- [x] Setup a **HomeTabs** (using TabNavigator) for the Social Feed Screen (default) and Profile Screen
+- [x] Setup a **RootNavigator** (using StackNavigator) with the **IntroStack** & **HomeTabs** with `mode: "modal"`
+- [x] Design & build an Edit Profile Screen
+- [x] Setup a **ProfileStack** (using StackNavigator) for the Profile Screen (root), Post Details Screen (push) & Edit Profile Screen (modal) with mode: "modal" and custom RNE header component
+- [x] Design & build an Post Details Screen
+- [x] Design & build an Create Post Screen
+- [x] Setup a **SocialStack** (using StackNavigator) for the Social Feed Screen (root), Post Details Screen (push) & Create Post Screen (modal) with mode: "modal" and custom RNE header component
 - [ ] :star: **Bonus:** Display Posts on ProfileScreen
 - [ ] :star: **Bonus:** Setup a **HomeNavigator**(using DrawerNavigator) with the **HomeTabs** (as root) and update **RootNavigator** to use **HomeNavigator** instead of **HomeTabs**
 - [ ] Add working gif of app to `README.MD`
