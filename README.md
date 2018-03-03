@@ -106,9 +106,10 @@ Social Feed screen is based on **Facebook**.
 - [x] Setup a **SocialStack** (using StackNavigator) for the Social Feed Screen (root), Post Details Screen (push) & Create Post Screen (modal) with mode: "modal" and custom RNE header component
 - [ ] :star: **Bonus:** Display Posts on ProfileScreen
 - [ ] :star: **Bonus:** Setup a **HomeNavigator**(using DrawerNavigator) with the **HomeTabs** (as root) and update **RootNavigator** to use **HomeNavigator** instead of **HomeTabs**
-- [ ] Add working gif of app to `README.MD`
+- [x] Add working gif of app to `README.MD`
 
 ### Demo
+![assignment_2](https://i.imgur.com/XheHhg5.gif)
 
 ## Submission
 
