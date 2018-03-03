@@ -103,16 +103,16 @@ export default class SocialFeedScreen extends React.Component {
     return ( this.state.fontLoaded &&
       <View style={styles.mainContent}>
         <View style={styles.createPostContainer}>
-          <TouchableOpacity onPress={() => navigate('CreatePost')} style={styles.createPostLabelContainer}>
+          <TouchableOpacity onPress={() => navigate('CreatePost', { member: SOCIAL_FEED_MOCK_DATA[0] })} style={styles.createPostLabelContainer}>
             <Text style={styles.createPostLabel}>Create Post</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.addPhotoIcon} onPress={() => navigate('CreatePost')}>
+          <TouchableOpacity style={styles.addPhotoIcon}>
             <SimpleLineIcons
               name='picture'
               size={Platform.OS === 'ios' ? 22 : 25}
             />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.addPhotoIcon} onPress={() => navigate('CreatePost')}>
+          <TouchableOpacity style={styles.addPhotoIcon} onPress={() => navigate('CreatePost', { member: SOCIAL_FEED_MOCK_DATA[0] })}>
             <SimpleLineIcons
               name='feed'
               size={Platform.OS === 'ios' ? 22 : 25}
