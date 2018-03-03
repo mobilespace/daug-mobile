@@ -64,7 +64,7 @@ export default class SocialFeedScreen extends React.Component {
             }
           </View>
         </View>
-        <TouchableOpacity onPress={() => navigate('Post')} activeOpacity={1}>
+        <TouchableOpacity onPress={() => navigate('Post', { post: member })} activeOpacity={1}>
           <View style={styles.postContentContainer}>
             <Image source={{ uri: member.post.image }} style={styles.postImage} resizeMode="cover" />
             <Text style={styles.postCaption}>{member.post.caption}</Text>

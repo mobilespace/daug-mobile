@@ -6,7 +6,25 @@ export const SOCIAL_FEED_MOCK_DATA = [
       image: 'https://images.pexels.com/photos/356378/pexels-photo-356378.jpeg?w=1260&h=750&dpr=2&auto=compress&cs=tinysrgb',
       caption: 'This is Roxie! She is 3 years old. She is seen here chilling and posing for the camera',
       date: '2 hrs ago'
-    }
+    },
+    comments: [
+      {
+        id: 1,
+        content: 'Nice daug!',
+        user: {
+          name: 'Ryan Liszewski',
+          image: 'https://avatars3.githubusercontent.com/u/5275250?s=460&v=4',
+        }
+      },
+      {
+        id: 2,
+        content: 'What breed is that dog?',
+        user: {
+          name: 'Nicholas Szeto',
+          image: 'https://avatars1.githubusercontent.com/u/23561635?s=460&v=4',
+        }
+      }
+    ]
   },
   {
     name: 'Ryan Liszewski',
@@ -26,7 +44,73 @@ export const SOCIAL_FEED_MOCK_DATA = [
       image: 'https://images.pexels.com/photos/39317/chihuahua-dog-puppy-cute-39317.jpeg?w=1260&h=750&dpr=2&auto=compress&cs=tinysrgb',
       caption: 'This is Roxie! She is 3 years old',
       date: '2 hrs ago'
-    }
+    },
+    comments: [
+      {
+        id: 1,
+        content: 'Nice daug!',
+        user: {
+          name: 'Ryan Liszewski',
+          image: 'https://avatars3.githubusercontent.com/u/5275250?s=460&v=4',
+        }
+      },
+      {
+        id: 2,
+        content: 'What breed is that dog?',
+        user: {
+          name: 'Nicholas Szeto',
+          image: 'https://avatars1.githubusercontent.com/u/23561635?s=460&v=4',
+        }
+      },
+      {
+        id: 3,
+        content: 'Nice daug!',
+        user: {
+          name: 'Ryan Liszewski',
+          image: 'https://avatars3.githubusercontent.com/u/5275250?s=460&v=4',
+        }
+      },
+      {
+        id: 4,
+        content: 'What breed is that dog?',
+        user: {
+          name: 'Nicholas Szeto',
+          image: 'https://avatars1.githubusercontent.com/u/23561635?s=460&v=4',
+        }
+      },
+      {
+        id: 5,
+        content: 'Nice daug!',
+        user: {
+          name: 'Ryan Liszewski',
+          image: 'https://avatars3.githubusercontent.com/u/5275250?s=460&v=4',
+        }
+      },
+      {
+        id: 6,
+        content: 'What breed is that dog?',
+        user: {
+          name: 'Nicholas Szeto',
+          image: 'https://avatars1.githubusercontent.com/u/23561635?s=460&v=4',
+        }
+      },
+      {
+        id: 7,
+        content: 'Nice daug!',
+        user: {
+          name: 'Ryan Liszewski',
+          image: 'https://avatars3.githubusercontent.com/u/5275250?s=460&v=4',
+        }
+      },
+      {
+        id: 8,
+        content: 'What breed is that dog?',
+        user: {
+          name: 'Nicholas Szeto',
+          image: 'https://avatars1.githubusercontent.com/u/23561635?s=460&v=4',
+        }
+      }
+    ]
   },
   {
     name: 'Bhavesh Chowdhury',
