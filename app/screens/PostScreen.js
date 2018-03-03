@@ -45,14 +45,11 @@ export default class PostScreen extends React.Component {
   displayComment(comment, index) {
     return (
       <View style={styles.commentContainer} key={index}>
-        <TouchableOpacity onPress={() => navigate('Profile', { admin: 'false' })} activeOpacity={0.8}>
+        <TouchableOpacity activeOpacity={0.8}>
           <Image source={{ uri: comment.user.image }} style={styles.commentAvatar} />
         </TouchableOpacity>
         <View style={styles.postUsernameLocationContainer}>
-          <TouchableOpacity
-            style={styles.postUsernameView}
-            onPress={() => navigate('Profile', { admin: 'false' })}
-          >
+          <TouchableOpacity style={styles.postUsernameView}>
             <Text style={styles.commentUsernameLabel}>{comment.user.name}</Text>
           </TouchableOpacity>
           <View style={styles.postLocationView}>
@@ -87,15 +84,15 @@ export default class PostScreen extends React.Component {
       <Component style={styles.mainContent}>
         <View style={styles.postContainer} key={member}>
           <View style={styles.postHeaderContainer}>
-            <TouchableOpacity onPress={() => navigate('Profile', { admin: 'false' })} activeOpacity={0.8}>
-              <Image source={{ uri: member.image }} style={styles.avatar} />
+            <TouchableOpacity onPress={() => navigate('Profile', { isHeaderShow: true, user: member.user })} activeOpacity={0.8}>
+              <Image source={{ uri: member.user.image }} style={styles.avatar} />
             </TouchableOpacity>
             <View style={styles.postUsernameLocationContainer}>
               <TouchableOpacity
                 style={[styles.postUsernameView, member.location && { marginTop: 10 }]}
-                onPress={() => navigate('Profile', { admin: 'false' })}
+                onPress={() => navigate('Profile', { header: true, user: member.user })}
               >
-                <Text style={styles.nameLabel}>{member.name}</Text>
+                <Text style={styles.nameLabel}>{member.user.name}</Text>
               </TouchableOpacity>
               {member.location &&
                 <View style={styles.postLocationView}>
@@ -104,15 +101,15 @@ export default class PostScreen extends React.Component {
               }
             </View>
           </View>
-          <TouchableOpacity onPress={() => navigate('Post', { post: member })} activeOpacity={1}>
+          <View>
             <View style={styles.postContentContainer}>
-              <Image source={{ uri: member.post.image }} style={styles.postImage} resizeMode="cover" />
-              <Text style={styles.postCaption}>{member.post.caption}</Text>
+              <Image source={{ uri: member.image }} style={styles.postImage} resizeMode="cover" />
+              <Text style={styles.postCaption}>{member.caption}</Text>
             </View>
-          </TouchableOpacity>
+          </View>
           <View style={styles.postFooterContainer}>
             <View style={styles.postDateView}>
-              <Text style={styles.postDateText}>{member.post.date}</Text>
+              <Text style={styles.postDateText}>{member.date}</Text>
             </View>
             <View style={[styles.postActionView, { marginRight: 20 }]}>
               <Icon
@@ -120,7 +117,7 @@ export default class PostScreen extends React.Component {
                 color={liked ? 'red' : null} type="ionicon" size={25}
                 onPress={() => this.setState({ liked: !liked })}
               />
-              <Text style={styles.postActionText}>200</Text>
+              <Text style={styles.postActionText}>{member.likes}</Text>
             </View>
           </View>
         </View>

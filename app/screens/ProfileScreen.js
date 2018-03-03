@@ -5,23 +5,39 @@ import {
   Text,
   Image,
   ScrollView,
-  TouchableHighlight
+  TouchableHighlight,
+  TouchableOpacity
 } from 'react-native';
 import { Font, LinearGradient } from 'expo';
 import { Button } from 'react-native-elements';
 
 import LOGO_IMAGE from '../../assets/daug_logo.png';
 
+import { SOCIAL_FEED_MOCK_DATA } from '../utils/constants';
+
 export default class ProfileScreen extends React.Component {
-  static navigationOptions = ({ navigation }) => ({
-    header: null
-  });
+  static navigationOptions = ({ navigation }) => {
+    return {
+      headerVisible: navigation.state.params ? navigation.state.params.isHeaderShow : false,
+      title: 'Profile',
+      headerTintColor: '#fd746c',
+      headerTitleStyle: {
+        fontSize: 20,
+        fontFamily: 'Righteous'
+      }
+    }
+  }
 
   constructor(props) {
     super(props);
 
+    const user = props.navigation.state.params && props.navigation.state.params.user
+    const isHeaderShow = props.navigation.state.params && props.navigation.state.params.isHeaderShow
+
     this.state = {
-      fontLoaded: false
+      fontLoaded: false,
+      user: user || SOCIAL_FEED_MOCK_DATA[0].user,
+      isHeaderShow: isHeaderShow || false
     };
   }
 
@@ -33,8 +49,41 @@ export default class ProfileScreen extends React.Component {
     this.setState({ fontLoaded: true });
   }
 
+  displayPost(post, index) {
+    return (
+      <View style={styles.commentContainer} key={index}>
+        <TouchableOpacity onPress={() => navigate('Profile', { admin: 'false' })} activeOpacity={0.8}>
+          <Image source={{ uri: post.image }} style={styles.commentAvatar} />
+        </TouchableOpacity>
+        <View style={styles.postUsernameLocationContainer}>
+          <TouchableOpacity
+            style={styles.postUsernameView}
+            onPress={() => navigate('Profile', { admin: 'false' })}
+          >
+            <Text style={styles.commentUsernameLabel}>{post.caption}</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    )
+  }
+
+  renderPosts() {
+    const { posts } = this.state.user
+
+    return (
+      <View style={styles.postsContainer}>
+        {
+          posts.map((post, index) => {
+            return this.displayPost(post, index)
+          })
+        }
+      </View>
+    )
+  }
+
   render() {
     const { navigate } = this.props.navigation
+    const { user, isHeaderShow } = this.state
 
     return (
       <ScrollView>
@@ -44,7 +93,7 @@ export default class ProfileScreen extends React.Component {
               <View style={styles.headerBannerViewContainer}>
                 <Image
                   style={styles.bannerImage}
-                  source={{ uri: 'http://puppytoob.com/wp-content/uploads/2015/05/dalmatian-1024x683.jpg' }}
+                  source={{ uri: user.banner }}
                   resizeMode='cover'
                 />
               </View>
@@ -52,52 +101,66 @@ export default class ProfileScreen extends React.Component {
                 <View style={styles.profileImageContainer}>
                   <Image
                     style={styles.profileImage}
-                    source={{ uri: 'https://thumbs.dreamstime.com/b/dalmatian-puppy-portrait-10524552.jpg' }}
+                    source={{ uri: user.image }}
                     resizeMode='cover'
                   />
                 </View>
                 <View style={styles.profileDetailsContainer}>
                   <View style={styles.profileStatsContainer}>
                     <View style={styles.profileStat}>
-                      <Text style={styles.statsLabel}>1</Text>
+                      <Text style={styles.statsLabel}>{user.posts ? user.posts.length : '0'}</Text>
                       <Text style={styles.statsLabel}>Posts</Text>
                     </View>
                     <View style={styles.profileStat}>
-                      <Text style={styles.statsLabel}>281</Text>
+                      <Text style={styles.statsLabel}>{user.followers}</Text>
                       <Text style={styles.statsLabel}>Followers</Text>
                     </View>
                     <View style={styles.profileStat}>
-                      <Text style={styles.statsLabel}>124</Text>
+                      <Text style={styles.statsLabel}>{user.following}</Text>
                       <Text style={styles.statsLabel}>Following</Text>
                     </View>
                   </View>
                   <View style={styles.profileEditButtonContainer}>
-                    <Button text="Edit Profile"
-                      containerStyle={{ marginBottom: 10 }}
-                      buttonStyle={styles.editProfileButton}
-                      textStyle={styles.editProfileText}
-                      onPress={() => navigate('EditProfile')}
-                    />
+                    {
+                      !isHeaderShow ?
+                        <Button text="Edit Profile"
+                          containerStyle={{ marginBottom: 10 }}
+                          buttonStyle={styles.editProfileButton}
+                          textStyle={styles.editProfileText}
+                          onPress={() => navigate('EditProfile')}
+                        /> :
+                        <Button text="Follow"
+                          containerStyle={{ marginBottom: 10 }}
+                          buttonStyle={styles.followButton}
+                          textStyle={styles.followText}
+                          onPress={() => console.log("Followed")}
+                        />
+                      }
                   </View>
                 </View>
               </View>
               <View style={styles.headerFooterViewContainer}>
                 <View style={styles.headerNameContainer}>
-                  <Text style={styles.nameText}>Charlie</Text>
+                  <Text style={styles.nameText}>{user.name}</Text>
                 </View>
                 <View style={styles.headerBioContainer}>
-                  <Text style={styles.bioText}>The world's friendliest dalmation!</Text>
+                  <Text style={styles.bioText}>{user.bio}</Text>
                 </View>
               </View>
             </View>
-            <View style={styles.contentViewContainer}>
-              <Button
-                text="LOGOUT"
-                buttonStyle={styles.logoutButton}
-                textStyle={styles.logoutText}
-                onPress={() => navigate('IntroStack')}
-              />
-            </View>
+            <Text style={styles.sectionHeaderText}>{user.posts ? user.posts.length : 'NO'} POSTS</Text>
+            {user.posts && this.renderPosts()}
+            {
+              !isHeaderShow &&
+              <View style={styles.contentViewContainer}>
+                <Button
+                  text="LOGOUT"
+                  buttonStyle={styles.logoutButton}
+                  textStyle={styles.logoutText}
+                  onPress={() => navigate('IntroStack')}
+                />
+              </View>
+            }
           </View>
         }
       </ScrollView>
@@ -176,6 +239,17 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: 13
   },
+  followButton: {
+    backgroundColor: '#28ABEC',
+    width: 150,
+    height: 30,
+    borderRadius: 5
+  },
+  followText: {
+    fontFamily: 'Righteous',
+    color: 'white',
+    fontSize: 13
+  },
   headerFooterViewContainer: {
     justifyContent: 'center'
   },
@@ -213,5 +287,15 @@ const styles = StyleSheet.create({
   logoutText: {
     fontFamily: 'Righteous',
     fontSize: 18
+  },
+  sectionHeaderText: {
+    fontSize: 13,
+    fontFamily: 'Righteous',
+    color: '#aaaaaa',
+    marginVertical: 10,
+    marginLeft: 10
+  },
+  postsContainer: {
+    backgroundColor: 'white'
   }
 });

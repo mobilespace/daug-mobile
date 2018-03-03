@@ -6,10 +6,12 @@ import {
   Image,
   ScrollView,
   FlatList,
-  TouchableOpacity
+  TouchableOpacity,
+  Platform
 } from 'react-native';
 import { Font, LinearGradient } from 'expo';
 import { Button, Icon } from 'react-native-elements';
+import { SimpleLineIcons } from '@expo/vector-icons';
 
 import { SOCIAL_FEED_MOCK_DATA } from '../utils/constants';
 
@@ -47,15 +49,15 @@ export default class SocialFeedScreen extends React.Component {
     return (
       <View style={styles.postContainer} key={member}>
         <View style={styles.postHeaderContainer}>
-          <TouchableOpacity onPress={() => navigate('Profile', { admin: 'false' })} activeOpacity={0.8}>
+          <TouchableOpacity onPress={() => navigate('Profile', { isHeaderShow: true, user: member.user })} activeOpacity={0.8}>
             <Image source={{ uri: member.image }} style={styles.avatar} />
           </TouchableOpacity>
           <View style={styles.postUsernameLocationContainer}>
             <TouchableOpacity
               style={[styles.postUsernameView, member.location && { marginTop: 10 }]}
-              onPress={() => navigate('Profile', { admin: 'false' })}
+              onPress={() => navigate('Profile', { isHeaderShow: true, user: member.user })}
             >
-              <Text style={styles.nameLabel}>{member.name}</Text>
+              <Text style={styles.nameLabel}>{member.user.name}</Text>
             </TouchableOpacity>
             {member.location &&
               <View style={styles.postLocationView}>
@@ -66,13 +68,13 @@ export default class SocialFeedScreen extends React.Component {
         </View>
         <TouchableOpacity onPress={() => navigate('Post', { post: member })} activeOpacity={1}>
           <View style={styles.postContentContainer}>
-            <Image source={{ uri: member.post.image }} style={styles.postImage} resizeMode="cover" />
-            <Text style={styles.postCaption}>{member.post.caption}</Text>
+            <Image source={{ uri: member.image }} style={styles.postImage} resizeMode="cover" />
+            <Text style={styles.postCaption}>{member.caption}</Text>
           </View>
         </TouchableOpacity>
         <View style={styles.postFooterContainer}>
           <View style={styles.postDateView}>
-            <Text style={styles.postDateText}>{member.post.date}</Text>
+            <Text style={styles.postDateText}>{member.date}</Text>
           </View>
           <View style={styles.postActionView}>
             <Icon
@@ -80,7 +82,7 @@ export default class SocialFeedScreen extends React.Component {
               color={commented ? 'black' : null} type="ionicon" size={25}
               onPress={() => this.setState({ commented: !commented })}
             />
-            <Text style={styles.postActionText}>10</Text>
+            <Text style={styles.postActionText}>{member.comments ? member.comments.length : 0}</Text>
           </View>
           <View style={[styles.postActionView, {marginRight: 20}]}>
             <Icon
@@ -88,7 +90,7 @@ export default class SocialFeedScreen extends React.Component {
               color={liked ? 'red' : null} type="ionicon" size={25}
               onPress={() => this.setState({ liked: !liked })}
             />
-            <Text style={styles.postActionText}>200</Text>
+            <Text style={styles.postActionText}>{member.likes}</Text>
           </View>
         </View>
       </View>
@@ -98,22 +100,34 @@ export default class SocialFeedScreen extends React.Component {
   render() {
     const { navigate } = this.props.navigation
 
-    return (
-      <ScrollView>
-        {this.state.fontLoaded &&
-          <View style={styles.mainContent}>
-            <TouchableOpacity style={styles.createPostContainer} onPress={() => navigate('CreatePost')}>
-              <Text style={styles.createPostLabel}>Create Post</Text>
-            </TouchableOpacity>
-            <FlatList
-              data={SOCIAL_FEED_MOCK_DATA}
-              extraData={this.state}
-              keyExtractor={(item, index) => index}
-              renderItem={({ item }) => this.renderMemberRow(item)}
+    return ( this.state.fontLoaded &&
+      <View style={styles.mainContent}>
+        <View style={styles.createPostContainer}>
+          <TouchableOpacity onPress={() => navigate('CreatePost')} style={styles.createPostLabelContainer}>
+            <Text style={styles.createPostLabel}>Create Post</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.addPhotoIcon} onPress={() => navigate('CreatePost')}>
+            <SimpleLineIcons
+              name='picture'
+              size={Platform.OS === 'ios' ? 22 : 25}
             />
-          </View>
-        }
-      </ScrollView>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.addPhotoIcon} onPress={() => navigate('CreatePost')}>
+            <SimpleLineIcons
+              name='feed'
+              size={Platform.OS === 'ios' ? 22 : 25}
+            />
+          </TouchableOpacity>
+        </View>
+        <ScrollView>
+          <FlatList
+            data={SOCIAL_FEED_MOCK_DATA}
+            extraData={this.state}
+            keyExtractor={(item, index) => index}
+            renderItem={({ item }) => this.renderMemberRow(item)}
+          />
+        </ScrollView>
+      </View>
     );
   }
 }
@@ -124,17 +138,25 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   createPostContainer: {
+    flexDirection: 'row',
+    height: 70,
+    alignItems: 'center',
     backgroundColor: '#f9f9f9',
-    height: 50,
-    justifyContent: 'center'
+  },
+  createPostLabelContainer: {
+    flex: 10,
+    marginLeft: 20
   },
   createPostLabel: {
     fontSize: 18,
     color: '#DA727E',
-    marginLeft: 10,
     fontWeight: 'bold',
-    fontFamily: 'Righteous',
-    marginLeft: 20
+    fontFamily: 'Righteous'
+  },
+  addPhotoIcon: {
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    paddingRight: 20,
   },
   postContainer: {
     backgroundColor: 'white',
