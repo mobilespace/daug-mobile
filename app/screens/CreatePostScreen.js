@@ -13,36 +13,16 @@ import { Font } from 'expo';
 import { SimpleLineIcons } from '@expo/vector-icons';
 import { Header } from 'react-native-elements';
 
-export default class CreatePostScreen extends React.Component {
-  static navigationOptions = ({ navigation }) => ({
-    title: "Create Post",
-    headerTintColor: '#fd746c',
-    headerTitleStyle: {
-      fontSize: 20,
-      fontFamily: 'Righteous'
-    },
-    headerLeft: (
-      <TouchableOpacity onPress={() => navigation.navigate('SocialStack')}>
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', marginHorizontal: 20 }}>
-          <Text style={{ fontSize: 15, fontFamily: 'Righteous' }}>Cancel</Text>
-        </View>
-      </TouchableOpacity>
-    ),
-    headerRight: (
-      <TouchableOpacity onPress={() => navigation.navigate('SocialStack')}>
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', marginHorizontal: 20 }}>
-          <Text style={{ fontSize: 15, fontFamily: 'Righteous' }}>Share</Text>
-        </View>
-      </TouchableOpacity>
-    )
-  });
+import { ENV_URL } from '../utils/helpers';
 
+export default class CreatePostScreen extends React.Component {
   constructor(props) {
     super(props);
 
     const { member } = props.navigation.state.params
 
     this.state = {
+      isLoading: false,
       fontLoaded: false,
       member,
       newPostContent: ''
@@ -55,6 +35,69 @@ export default class CreatePostScreen extends React.Component {
     });
 
     this.setState({ fontLoaded: true });
+  }
+
+  async createPost() {
+    this.setState({ isLoading: true })
+
+    const { newPostContent } = this.state
+
+    var details = {
+      'description': newPostContent
+    };
+
+    var formBody = [];
+
+    for (var property in details) {
+      var encodedKey = encodeURIComponent(property);
+      var encodedValue = encodeURIComponent(details[property]);
+
+      formBody.push(encodedKey + "=" + encodedValue);
+    }
+
+    formBody = formBody.join("&");
+
+    try {
+      let response = await fetch(`${ENV_URL}/api/users/19/posts`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+        },
+        body: formBody
+      });
+
+      let responseJSON = null
+
+      if (response.status === 201) {
+        responseJSON = await response.json();
+
+        console.log(responseJSON)
+
+        this.setState({ isLoading: false })
+
+        Alert.alert(
+          'Post created!',
+          '',
+          [
+            { text: "Dismiss", onPress: () => this.props.navigation.goBack() }
+          ],
+          { cancelable: false }
+        )
+      } else {
+        responseJSON = await response.json();
+        const error = responseJSON.message
+
+        console.log(responseJSON)
+
+        this.setState({ isLoading: false, errors: responseJSON.errors })
+
+        Alert.alert('Unable to create post!', `${error}`)
+      }
+    } catch (error) {
+      this.setState({ isLoading: false, response: error })
+
+      Alert.alert('Unable to create post!', `${error}`)
+    }
   }
 
   render() {
@@ -80,18 +123,7 @@ export default class CreatePostScreen extends React.Component {
             }
           }}
           rightComponent={
-            <TouchableOpacity onPress={() => {
-                Alert.alert(
-                  'Success!',
-                  `The post has been created with: ${newPostContent}`,
-                  [
-                    { text: "OK", onPress: () => goBack() }
-                  ],
-                  { cancelable: false }
-                )
-              }}
-              style={{ flex: 1 }}
-            >
+            <TouchableOpacity onPress={this.createPost.bind(this)} style={{ flex: 1 }}>
               <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                 <Text style={{ fontSize: 15, fontFamily: 'Righteous', color: 'black' }}>Share</Text>
               </View>

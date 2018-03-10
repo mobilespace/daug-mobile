@@ -4,16 +4,20 @@ import {
   View,
   Text,
   TouchableOpacity,
-  Image
+  Image,
+  Alert
 } from 'react-native';
 import { Font } from 'expo';
 import { Input, Header } from 'react-native-elements';
+
+import { ENV_URL } from '../utils/helpers';
 
 export default class EditProfileScreen extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      isLoading: false,
       fontLoaded: false,
       name: 'Charlie',
       bio: "The world's friendliest dalmation!",
@@ -27,6 +31,70 @@ export default class EditProfileScreen extends React.Component {
     });
 
     this.setState({ fontLoaded: true });
+  }
+
+  async submitProfile() {
+    this.setState({ isLoading: true })
+
+    const { name, bio } = this.state
+
+    var details = {
+      'name': name,
+      'bio': bio
+    };
+
+    var formBody = [];
+
+    for (var property in details) {
+      var encodedKey = encodeURIComponent(property);
+      var encodedValue = encodeURIComponent(details[property]);
+
+      formBody.push(encodedKey + "=" + encodedValue);
+    }
+
+    formBody = formBody.join("&");
+
+    try {
+      let response = await fetch(`${ENV_URL}/api/users/19`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+        },
+        body: formBody
+      });
+
+      let responseJSON = null
+
+      if (response.status === 200) {
+        responseJSON = await response.json();
+
+        console.log(responseJSON)
+
+        this.setState({ isLoading: false })
+
+        Alert.alert(
+          'Profile updated!',
+          '',
+          [
+            { text: "Dismiss", onPress: () => this.props.navigation.goBack() }
+          ],
+          { cancelable: false }
+        )
+      } else {
+        responseJSON = await response.json();
+        const error = responseJSON.message
+
+        console.log(responseJSON)
+
+        this.setState({ isLoading: false, errors: responseJSON.errors })
+
+        Alert.alert('Unable to update profile!', `${error}`)
+      }
+    } catch (error) {
+      this.setState({ isLoading: false, response: error })
+
+      Alert.alert('Unable to update profile!', `${error}`)
+    }
   }
 
   render() {
@@ -51,7 +119,7 @@ export default class EditProfileScreen extends React.Component {
             }
           }}
           rightComponent={
-            <TouchableOpacity onPress={() => this.props.navigation.goBack()} style={{ flex: 1 }}>
+            <TouchableOpacity onPress={this.submitProfile.bind(this)} style={{ flex: 1 }}>
               <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                 <Text style={{ fontSize: 15, fontFamily: 'Righteous', color: 'black' }}>Done</Text>
               </View>
