@@ -37,7 +37,9 @@ export default class SignupScreen extends React.Component {
       name: '',
       email: '',
       password: '',
-      isLoading: false
+      isLoading: false,
+      message: '',
+      errors: null
     };
   }
 
@@ -90,8 +92,8 @@ export default class SignupScreen extends React.Component {
 
         this.setState({ isLoading: false })
         Alert.alert(
-          'Logged In!',
-          'You have successfully logged in!',
+          'Signed Up!',
+          'You have successfully signed up!',
           [
             { text: "Continue", onPress: () => navigate('HomeTabs') }
           ],
@@ -101,14 +103,17 @@ export default class SignupScreen extends React.Component {
         responseJSON = await response.json();
         const error = responseJSON.message
 
-        this.setState({ isLoading: false, error })
+        console.log(responseJSON)
 
-        Alert.alert('Log in failed!', `Unable to login.. ${error}!`)
+        this.setState({ isLoading: false, errors: responseJSON.errors })
+        Alert.alert('Sign up failed!', `Unable to signup.. ${error}!`)
       }
     } catch (error) {
       this.setState({ isLoading: false, response: error })
 
-      Alert.alert('Log in failed!', 'Unable to login. Please try again later')
+      console.log(error)
+
+      Alert.alert('Sign up failed!', 'Unable to Signup. Please try again later')
     }
   }
 
@@ -119,7 +124,7 @@ export default class SignupScreen extends React.Component {
   }
 
   render() {
-    const { name, email, password, isLoading } = this.state
+    const { name, email, password, isLoading, errors } = this.state
 
     return (
       <LinearGradient
@@ -142,10 +147,10 @@ export default class SignupScreen extends React.Component {
               placeholderTextColor="white"
               autoCapitalize="words"
               returnKeyType="next"
-              displayError={false}
-              errorMessage="Please enter a valid name"
-              errorStyle={{ color: 'white' }}
-              containerStyle={styles.inputContainer}
+              displayError={errors && errors.name}
+              errorMessage="Please provide your name"
+              errorStyle={{ color: 'gray' }}
+              containerStyle={[styles.inputContainer, errors && errors.name && { borderColor: 'gray' }]}
               inputStyle={{ color: 'white', fontFamily: 'Righteous' }}
               onSubmitEditing={() =>
                 this.emailInput.focus()
@@ -167,10 +172,10 @@ export default class SignupScreen extends React.Component {
               autoCapitalize="none"
               keyboardType="email-address"
               returnKeyType="next"
-              displayError={false}
+              displayError={errors && errors.email}
               errorMessage="Please enter a valid email address"
-              errorStyle={{ color: 'white' }}
-              containerStyle={styles.inputContainer}
+              errorStyle={{ color: 'gray' }}
+              containerStyle={[styles.inputContainer, errors && errors.email && { borderColor: 'gray' }]}
               inputStyle={{ color: 'white', fontFamily: 'Righteous' }}
               onSubmitEditing={() =>
                 this.passwordInput.focus()
@@ -190,11 +195,11 @@ export default class SignupScreen extends React.Component {
               placeholder="Password"
               placeholderTextColor="white"
               secureTextEntry
-              displayError={false}
-              errorMessage="The password fields are not identics"
-              errorStyle={{ color: 'white' }}
+              displayError={errors && errors.password}
+              errorMessage="Password must have at least 8 characters"
+              errorStyle={{ color: 'gray' }}
               returnKeyType="go"
-              containerStyle={styles.inputContainer}
+              containerStyle={[styles.inputContainer, errors && errors.password && { borderColor: 'gray'}]}
               inputStyle={{ color: 'white', fontFamily: 'Righteous' }}
               onSubmitEditing={() => {
                 this.signupButtonPressed()

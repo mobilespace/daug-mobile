@@ -40,7 +40,9 @@ export default class LoginScreen extends React.Component {
       fontLoaded: false,
       email: '',
       password: '',
-      isLoading: false
+      isLoading: false,
+      message: '',
+      errors: null
     };
   }
 
@@ -103,7 +105,9 @@ export default class LoginScreen extends React.Component {
         responseJSON = await response.json();
         const error = responseJSON.message
 
-        this.setState({ isLoading: false, error })
+        console.log(responseJSON)
+
+        this.setState({ isLoading: false, errors: responseJSON.errors })
 
         Alert.alert('Log in failed!', `Unable to login.. ${error}!`)
       }
@@ -121,7 +125,7 @@ export default class LoginScreen extends React.Component {
   }
 
   render() {
-    const { email, password, isLoading } = this.state
+    const { email, password, isLoading, errors } = this.state
 
     return (
       <LinearGradient
@@ -145,10 +149,10 @@ export default class LoginScreen extends React.Component {
               autoCapitalize="none"
               keyboardType="email-address"
               returnKeyType="next"
-              displayError={false}
+              displayError={errors && errors.email}
               errorMessage="Please enter a valid email address"
-              errorStyle={{ color: 'white' }}
-              containerStyle={styles.inputContainer}
+              errorStyle={{ color: 'gray' }}
+              containerStyle={[styles.inputContainer, errors && errors.email && { borderColor: 'gray' }]}
               inputStyle={{ color: 'white', fontFamily: 'Righteous' }}
               onSubmitEditing={() =>
                 this.passwordInput.focus()
@@ -168,11 +172,11 @@ export default class LoginScreen extends React.Component {
               placeholder="Password"
               placeholderTextColor="white"
               secureTextEntry
-              displayError={false}
-              errorMessage="The password fields are not identics"
-              errorStyle={{color: 'white'}}
+              displayError={errors && errors.password}
+              errorMessage="Invalid password"
+              errorStyle={{color: 'gray'}}
               returnKeyType="go"
-              containerStyle={styles.inputContainer}
+              containerStyle={[styles.inputContainer, errors && errors.password && { borderColor: 'gray' }]}
               inputStyle={{ color: 'white', fontFamily: 'Righteous' }}
               onSubmitEditing={() => {
                 this.loginButtonPressed()
