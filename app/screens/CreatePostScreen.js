@@ -6,7 +6,8 @@ import {
   TouchableOpacity,
   Image,
   TextInput,
-  Alert
+  Alert,
+  DeviceEventEmitter
 } from 'react-native';
 import { Font } from 'expo';
 
@@ -79,7 +80,10 @@ export default class CreatePostScreen extends React.Component {
           'Post created!',
           '',
           [
-            { text: "Dismiss", onPress: () => this.props.navigation.goBack() }
+            { text: "Dismiss", onPress: () => {
+              DeviceEventEmitter.emit('new_post_created', {})
+              this.props.navigation.goBack()
+            }}
           ],
           { cancelable: false }
         )
@@ -136,13 +140,13 @@ export default class CreatePostScreen extends React.Component {
           <View style={styles.createPostContainer}>
             <View style={styles.createPostHeaderContainer}>
               <TouchableOpacity activeOpacity={0.8}>
-                <Image source={{ uri: member.user.image }} style={styles.avatar} />
+                <Image source={{ uri: member.profile_image || '' }} style={styles.avatar} />
               </TouchableOpacity>
               <View style={styles.locationContainer}>
                 <TouchableOpacity
                   style={[styles.usernameView, member.location && { marginTop: 10 }]}
                 >
-                  <Text style={styles.nameLabel}>{member.user.name}</Text>
+                  <Text style={styles.nameLabel}>{member.name}</Text>
                 </TouchableOpacity>
                 <View style={styles.locationView}>
                   <SimpleLineIcons

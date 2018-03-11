@@ -5,7 +5,8 @@ import {
   Text,
   TouchableOpacity,
   Image,
-  Alert
+  Alert,
+  DeviceEventEmitter
 } from 'react-native';
 import { Font } from 'expo';
 import { Input, Header } from 'react-native-elements';
@@ -16,12 +17,12 @@ export default class EditProfileScreen extends React.Component {
   constructor(props) {
     super(props);
 
+    const { user } = props.navigation.state.params
+
     this.state = {
       isLoading: false,
       fontLoaded: false,
-      name: 'Charlie',
-      bio: "The world's friendliest dalmation!",
-      email: 'charlie@doggo.com'
+      ...user
     };
   }
 
@@ -76,7 +77,10 @@ export default class EditProfileScreen extends React.Component {
           'Profile updated!',
           '',
           [
-            { text: "Dismiss", onPress: () => this.props.navigation.goBack() }
+            { text: "Dismiss", onPress: () => {
+              DeviceEventEmitter.emit('user_profile_updated', {})
+              this.props.navigation.goBack()
+            }}
           ],
           { cancelable: false }
         )
@@ -98,7 +102,7 @@ export default class EditProfileScreen extends React.Component {
   }
 
   render() {
-    const { name, bio, email } = this.state
+    const { name, bio, email, profile_image } = this.state
 
     return (
       <View style={styles.modalContainer}>
@@ -132,7 +136,7 @@ export default class EditProfileScreen extends React.Component {
           <View style={styles.photoContainer}>
             <Image
               style={styles.profileImage}
-              source={{ uri: 'https://thumbs.dreamstime.com/b/dalmatian-puppy-portrait-10524552.jpg' }}
+              source={{ uri: profile_image }}
               resizeMode='cover'
             />
             <TouchableOpacity onPress={() => console.log("Change Profile Photo here")}>

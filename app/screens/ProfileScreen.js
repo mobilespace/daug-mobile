@@ -6,14 +6,16 @@ import {
   Image,
   ScrollView,
   TouchableHighlight,
-  TouchableOpacity
+  TouchableOpacity,
+  ActivityIndicator,
+  DeviceEventEmitter
 } from 'react-native';
 import { Font, LinearGradient } from 'expo';
 import { Button } from 'react-native-elements';
 
 import LOGO_IMAGE from '../../assets/daug_logo.png';
 
-import { SOCIAL_FEED_MOCK_DATA } from '../utils/constants';
+import { ENV_URL } from '../utils/helpers';
 
 export default class ProfileScreen extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -35,8 +37,9 @@ export default class ProfileScreen extends React.Component {
     const isHeaderShow = props.navigation.state.params && props.navigation.state.params.isHeaderShow
 
     this.state = {
+      isLoading: false,
       fontLoaded: false,
-      user: user || SOCIAL_FEED_MOCK_DATA[0].user,
+      user: user || null,
       isHeaderShow: isHeaderShow || false
     };
   }
@@ -47,6 +50,41 @@ export default class ProfileScreen extends React.Component {
     });
 
     this.setState({ fontLoaded: true });
+
+    this.state.user === null && this.fetchUser()
+  }
+
+  componentWillMount() {
+    DeviceEventEmitter.addListener('user_profile_updated', (e) => {
+      this.fetchUser()
+    })
+  }
+
+  async fetchUser() {
+    this.setState({ isLoading: true });
+
+    try {
+      let response = await fetch(`${ENV_URL}/api/users/19`, {
+        method: 'GET'
+      });
+
+      let responseJSON = null
+
+      if (response.status === 200) {
+        responseJSON = await response.json();
+
+        console.log(responseJSON);
+
+        this.setState({ user: responseJSON, isLoading: false })
+      } else {
+        responseJSON = await response.json();
+        const error = responseJSON.message
+
+        console.log("failed" + error);
+      }
+    } catch (error) {
+      console.log("failed" + error);
+    }
   }
 
   displayPost(post, index) {
@@ -81,88 +119,103 @@ export default class ProfileScreen extends React.Component {
     )
   }
 
-  render() {
-    const { navigate } = this.props.navigation
+  loadingView() {
+    return (
+      <View style={styles.loadingView}>
+        <ActivityIndicator size="large" />
+      </View>
+    )
+  }
+
+  contentView() {
     const { user, isHeaderShow } = this.state
+    const { navigate } = this.props.navigation
 
     return (
       <ScrollView>
-        {this.state.fontLoaded &&
-          <View style={styles.mainContent}>
-            <View style={styles.headerViewContainer}>
-              <View style={styles.headerBannerViewContainer}>
+        <View style={styles.mainContent}>
+          <View style={styles.headerViewContainer}>
+            <View style={styles.headerBannerViewContainer}>
+              <Image
+                style={styles.bannerImage}
+                source={{ uri: user.banner_image || '' }}
+                resizeMode='cover'
+              />
+            </View>
+            <View style={styles.headerContentViewContainer}>
+              <View style={styles.profileImageContainer}>
                 <Image
-                  style={styles.bannerImage}
-                  source={{ uri: user.banner }}
+                  style={styles.profileImage}
+                  source={{ uri: user.profile_image || '' }}
                   resizeMode='cover'
                 />
               </View>
-              <View style={styles.headerContentViewContainer}>
-                <View style={styles.profileImageContainer}>
-                  <Image
-                    style={styles.profileImage}
-                    source={{ uri: user.image }}
-                    resizeMode='cover'
-                  />
-                </View>
-                <View style={styles.profileDetailsContainer}>
-                  <View style={styles.profileStatsContainer}>
-                    <View style={styles.profileStat}>
-                      <Text style={styles.statsLabel}>{user.posts ? user.posts.length : '0'}</Text>
-                      <Text style={styles.statsLabel}>Posts</Text>
-                    </View>
-                    <View style={styles.profileStat}>
-                      <Text style={styles.statsLabel}>{user.followers}</Text>
-                      <Text style={styles.statsLabel}>Followers</Text>
-                    </View>
-                    <View style={styles.profileStat}>
-                      <Text style={styles.statsLabel}>{user.following}</Text>
-                      <Text style={styles.statsLabel}>Following</Text>
-                    </View>
+              <View style={styles.profileDetailsContainer}>
+                <View style={styles.profileStatsContainer}>
+                  <View style={styles.profileStat}>
+                    <Text style={styles.statsLabel}>{user.posts ? user.posts.length : '0'}</Text>
+                    <Text style={styles.statsLabel}>Posts</Text>
                   </View>
-                  <View style={styles.profileEditButtonContainer}>
-                    {
-                      !isHeaderShow ?
-                        <Button text="Edit Profile"
-                          containerStyle={{ marginBottom: 10 }}
-                          buttonStyle={styles.editProfileButton}
-                          textStyle={styles.editProfileText}
-                          onPress={() => navigate('EditProfile')}
-                        /> :
-                        <Button text="Follow"
-                          containerStyle={{ marginBottom: 10 }}
-                          buttonStyle={styles.followButton}
-                          textStyle={styles.followText}
-                          onPress={() => console.log("Followed")}
-                        />
-                      }
+                  <View style={styles.profileStat}>
+                    <Text style={styles.statsLabel}>{user.followers || 0}</Text>
+                    <Text style={styles.statsLabel}>Followers</Text>
+                  </View>
+                  <View style={styles.profileStat}>
+                    <Text style={styles.statsLabel}>{user.following || 0}</Text>
+                    <Text style={styles.statsLabel}>Following</Text>
                   </View>
                 </View>
-              </View>
-              <View style={styles.headerFooterViewContainer}>
-                <View style={styles.headerNameContainer}>
-                  <Text style={styles.nameText}>{user.name}</Text>
-                </View>
-                <View style={styles.headerBioContainer}>
-                  <Text style={styles.bioText}>{user.bio}</Text>
+                <View style={styles.profileEditButtonContainer}>
+                  {
+                    !isHeaderShow ?
+                      <Button text="Edit Profile"
+                        containerStyle={{ marginBottom: 10 }}
+                        buttonStyle={styles.editProfileButton}
+                        textStyle={styles.editProfileText}
+                        onPress={() => navigate('EditProfile', { user: user })}
+                      /> :
+                      <Button text="Follow"
+                        containerStyle={{ marginBottom: 10 }}
+                        buttonStyle={styles.followButton}
+                        textStyle={styles.followText}
+                        onPress={() => console.log("Followed")}
+                      />
+                  }
                 </View>
               </View>
             </View>
-            <Text style={styles.sectionHeaderText}>{user.posts ? user.posts.length : 'NO'} POSTS</Text>
-            {
-              !isHeaderShow &&
-              <View style={styles.contentViewContainer}>
-                <Button
-                  text="LOGOUT"
-                  buttonStyle={styles.logoutButton}
-                  textStyle={styles.logoutText}
-                  onPress={() => navigate('IntroStack')}
-                />
+            <View style={styles.headerFooterViewContainer}>
+              <View style={styles.headerNameContainer}>
+                <Text style={styles.nameText}>{user.name}</Text>
               </View>
-            }
+              <View style={styles.headerBioContainer}>
+                <Text style={styles.bioText}>{user.bio}</Text>
+              </View>
+            </View>
           </View>
-        }
+          <Text style={styles.sectionHeaderText}>{user.posts ? user.posts.length : 'NO'} POSTS</Text>
+          {
+            !isHeaderShow &&
+            <View style={styles.contentViewContainer}>
+              <Button
+                text="LOGOUT"
+                buttonStyle={styles.logoutButton}
+                textStyle={styles.logoutText}
+                onPress={() => navigate('IntroStack')}
+              />
+            </View>
+          }
+        </View>
       </ScrollView>
+    )
+  }
+
+  render() {
+    const { navigate } = this.props.navigation
+    const { user, isHeaderShow, fontLoaded, isLoading } = this.state
+
+    return (
+      this.state.fontLoaded && ( isLoading || user === null ? this.loadingView() : this.contentView() )
     );
   }
 }
@@ -170,6 +223,11 @@ export default class ProfileScreen extends React.Component {
 const styles = StyleSheet.create({
   mainContent: {
     flex: 1,
+  },
+  loadingView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   headerViewContainer: {
     borderBottomWidth: 1,

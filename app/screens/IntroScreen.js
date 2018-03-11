@@ -35,29 +35,31 @@ export default class IntroScreen extends React.Component {
       'Righteous': require('../../assets/fonts/Righteous-Regular.ttf')
     });
 
-    // Simple API call - GET
+    this.setState({ fontLoaded: true });
+
+    this.pingServer()
+  }
+
+  async pingServer() {
+    // Check server status
+    // Simple GET request to /api
     try {
-      let response = await fetch(`${ENV_URL}/auth`, {
+      const response = await fetch(`${ENV_URL}/api`, {
         method: 'GET'
       });
-
-      let responseJSON = null
+      const responseJSON = await response.json();
 
       if (response.status === 200) {
-        responseJSON = await response.json();
-
-        console.log(responseJSON);
+        console.log(responseJSON.message);
+        console.log('Server up and running!');
       } else {
-        responseJSON = await response.json();
         const error = responseJSON.message
 
-        console.log("failed" + error);
+        console.log("Server request failed " + error);
       }
     } catch (error) {
-      console.log("failed" + error);
+      console.log("Server is down " + error);
     }
-
-    this.setState({ fontLoaded: true });
   }
 
   render() {

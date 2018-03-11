@@ -7,13 +7,15 @@ import {
   ScrollView,
   FlatList,
   TouchableOpacity,
-  Platform
+  Platform,
+  ActivityIndicator,
+  DeviceEventEmitter
 } from 'react-native';
 import { Font, LinearGradient } from 'expo';
 import { Button, Icon } from 'react-native-elements';
 import { SimpleLineIcons } from '@expo/vector-icons';
 
-import { SOCIAL_FEED_MOCK_DATA } from '../utils/constants';
+import { ENV_URL, timeSince } from '../utils/helpers';
 
 export default class SocialFeedScreen extends React.Component {
   static navigationOptions = ({ navigation }) => ({
@@ -28,7 +30,9 @@ export default class SocialFeedScreen extends React.Component {
     super(props);
 
     this.state = {
+      isLoading: false,
       fontLoaded: false,
+      posts: null,
       commented: false,
       liked: false
     };
@@ -40,6 +44,35 @@ export default class SocialFeedScreen extends React.Component {
     });
 
     this.setState({ fontLoaded: true });
+
+    this.fetchPosts()
+  }
+
+  componentWillMount() {
+    DeviceEventEmitter.addListener('new_post_created', (e) => {
+      this.fetchPosts()
+    })
+  }
+
+  async fetchPosts() {
+    try {
+      const response = await fetch(`${ENV_URL}/api/feed`, {
+        method: 'GET'
+      });
+      const responseJSON = await response.json();
+
+      if (response.status === 200) {
+        console.log(responseJSON);
+
+        this.setState({ posts: responseJSON })
+      } else {
+        const error = responseJSON.message
+
+        console.log("failed" + error);
+      }
+    } catch (error) {
+      console.log("failed" + error);
+    }
   }
 
   renderMemberRow(member) {
@@ -50,7 +83,7 @@ export default class SocialFeedScreen extends React.Component {
       <View style={styles.postContainer} key={member}>
         <View style={styles.postHeaderContainer}>
           <TouchableOpacity onPress={() => navigate('Profile', { isHeaderShow: true, user: member.user })} activeOpacity={0.8}>
-            <Image source={{ uri: member.image }} style={styles.avatar} />
+            <Image source={{ uri: member.user.profile_image || '' }} style={styles.avatar} />
           </TouchableOpacity>
           <View style={styles.postUsernameLocationContainer}>
             <TouchableOpacity
@@ -68,13 +101,13 @@ export default class SocialFeedScreen extends React.Component {
         </View>
         <TouchableOpacity onPress={() => navigate('Post', { post: member })} activeOpacity={1}>
           <View style={styles.postContentContainer}>
-            <Image source={{ uri: member.image }} style={styles.postImage} resizeMode="cover" />
-            <Text style={styles.postCaption}>{member.caption}</Text>
+            {member.image && <Image source={{ uri: member.image || ''}} style={styles.postImage} resizeMode="cover" />}
+            <Text style={styles.postCaption}>{member.description}</Text>
           </View>
         </TouchableOpacity>
         <View style={styles.postFooterContainer}>
           <View style={styles.postDateView}>
-            <Text style={styles.postDateText}>{member.date}</Text>
+            <Text style={styles.postDateText}>{timeSince(member.createdAt)}</Text>
           </View>
           <View style={styles.postActionView}>
             <Icon
@@ -82,7 +115,7 @@ export default class SocialFeedScreen extends React.Component {
               color={commented ? 'black' : null} type="ionicon" size={25}
               onPress={() => this.setState({ commented: !commented })}
             />
-            <Text style={styles.postActionText}>{member.comments ? member.comments.length : 0}</Text>
+            <Text style={styles.postActionText}>{member.comments || 0}</Text>
           </View>
           <View style={[styles.postActionView, {marginRight: 20}]}>
             <Icon
@@ -90,20 +123,44 @@ export default class SocialFeedScreen extends React.Component {
               color={liked ? 'red' : null} type="ionicon" size={25}
               onPress={() => this.setState({ liked: !liked })}
             />
-            <Text style={styles.postActionText}>{member.likes}</Text>
+            <Text style={styles.postActionText}>{member.likes || 0}</Text>
           </View>
         </View>
       </View>
     )
   }
 
+  loadingView() {
+    return (
+      <View style={styles.loadingView}>
+        <ActivityIndicator size="large" />
+      </View>
+    )
+  }
+
+  contentView() {
+    const { posts } = this.state
+
+    return (
+      <ScrollView>
+        <FlatList
+          data={posts}
+          extraData={this.state}
+          keyExtractor={(item, index) => index}
+          renderItem={({ item }) => this.renderMemberRow(item)}
+        />
+      </ScrollView>
+    )
+  }
+
   render() {
     const { navigate } = this.props.navigation
+    const { isLoading, posts } = this.state
 
     return ( this.state.fontLoaded &&
       <View style={styles.mainContent}>
         <View style={styles.createPostContainer}>
-          <TouchableOpacity onPress={() => navigate('CreatePost', { member: SOCIAL_FEED_MOCK_DATA[0] })} style={styles.createPostLabelContainer}>
+          <TouchableOpacity onPress={() => navigate('CreatePost', { member: posts[0].user })} style={styles.createPostLabelContainer}>
             <Text style={styles.createPostLabel}>Create Post</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.addPhotoIcon}>
@@ -112,21 +169,14 @@ export default class SocialFeedScreen extends React.Component {
               size={Platform.OS === 'ios' ? 22 : 25}
             />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.addPhotoIcon} onPress={() => navigate('CreatePost', { member: SOCIAL_FEED_MOCK_DATA[0] })}>
+          <TouchableOpacity style={styles.addPhotoIcon} onPress={() => navigate('CreatePost', { member: posts[0].user })}>
             <SimpleLineIcons
               name='feed'
               size={Platform.OS === 'ios' ? 22 : 25}
             />
           </TouchableOpacity>
         </View>
-        <ScrollView>
-          <FlatList
-            data={SOCIAL_FEED_MOCK_DATA}
-            extraData={this.state}
-            keyExtractor={(item, index) => index}
-            renderItem={({ item }) => this.renderMemberRow(item)}
-          />
-        </ScrollView>
+        {isLoading ? this.loadingView() : this.contentView()}
       </View>
     );
   }
@@ -134,8 +184,12 @@ export default class SocialFeedScreen extends React.Component {
 
 const styles = StyleSheet.create({
   mainContent: {
+    flex: 1
+  },
+  loadingView: {
     flex: 1,
-    justifyContent: 'center'
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   createPostContainer: {
     flexDirection: 'row',

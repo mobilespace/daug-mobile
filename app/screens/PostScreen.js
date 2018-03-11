@@ -11,6 +11,8 @@ import { Font } from 'expo';
 
 import { Button, Icon } from 'react-native-elements';
 
+import { ENV_URL, timeSince } from '../utils/helpers';
+
 export default class PostScreen extends React.Component {
   static navigationOptions = ({ navigation }) => ({
     title: 'Post',
@@ -46,14 +48,14 @@ export default class PostScreen extends React.Component {
     return (
       <View style={styles.commentContainer} key={index}>
         <TouchableOpacity activeOpacity={0.8}>
-          <Image source={{ uri: comment.user.image }} style={styles.commentAvatar} />
+          <Image source={{ uri: comment.user.profile_image || '' }} style={styles.commentAvatar} />
         </TouchableOpacity>
         <View style={styles.postUsernameLocationContainer}>
           <TouchableOpacity style={styles.postUsernameView}>
             <Text style={styles.commentUsernameLabel}>{comment.user.name}</Text>
           </TouchableOpacity>
           <View style={styles.postLocationView}>
-            <Text style={styles.commentContentLabel}>{comment.content}</Text>
+            <Text style={styles.commentContentLabel}>{comment.description}</Text>
           </View>
         </View>
       </View>
@@ -85,7 +87,7 @@ export default class PostScreen extends React.Component {
         <View style={styles.postContainer} key={member}>
           <View style={styles.postHeaderContainer}>
             <TouchableOpacity onPress={() => navigate('Profile', { isHeaderShow: true, user: member.user })} activeOpacity={0.8}>
-              <Image source={{ uri: member.user.image }} style={styles.avatar} />
+              <Image source={{ uri: member.user.profile_image || '' }} style={styles.avatar} />
             </TouchableOpacity>
             <View style={styles.postUsernameLocationContainer}>
               <TouchableOpacity
@@ -103,13 +105,13 @@ export default class PostScreen extends React.Component {
           </View>
           <View>
             <View style={styles.postContentContainer}>
-              <Image source={{ uri: member.image }} style={styles.postImage} resizeMode="cover" />
-              <Text style={styles.postCaption}>{member.caption}</Text>
+              <Image source={{ uri: member.image || '' }} style={styles.postImage} resizeMode="cover" />
+              <Text style={styles.postCaption}>{member.description}</Text>
             </View>
           </View>
           <View style={styles.postFooterContainer}>
             <View style={styles.postDateView}>
-              <Text style={styles.postDateText}>{member.date}</Text>
+              <Text style={styles.postDateText}>{timeSince(member.createdAt)}</Text>
             </View>
             <View style={[styles.postActionView, { marginRight: 20 }]}>
               <Icon
@@ -117,16 +119,18 @@ export default class PostScreen extends React.Component {
                 color={liked ? 'red' : null} type="ionicon" size={25}
                 onPress={() => this.setState({ liked: !liked })}
               />
-              <Text style={styles.postActionText}>{member.likes}</Text>
+              <Text style={styles.postActionText}>{member.likes || 0}</Text>
             </View>
           </View>
         </View>
         <Text style={styles.sectionHeaderText}>{member.comments ? member.comments.length : 'NO'} COMMENTS</Text>
-        {member.comments && this.renderComments()}
       </Component>
     )
   }
 }
+
+// Not displaying comments for now cause it's not returned by /api endpoint
+// {member.comments && this.renderComments()}
 
 const styles = StyleSheet.create({
   mainContent: {
