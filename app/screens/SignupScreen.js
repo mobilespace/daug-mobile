@@ -11,7 +11,7 @@ import { Font, LinearGradient } from 'expo';
 import { Button, Input } from 'react-native-elements';
 import { SimpleLineIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 
-import { ENV_URL } from '../utils/helpers';
+import { ENV_URL, onSignIn } from '../utils/helpers';
 
 export default class SignupScreen extends React.Component {
   static navigationOptions = ({ navigation }) => ({

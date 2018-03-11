@@ -15,7 +15,7 @@ import { Font, LinearGradient } from 'expo';
 import { Button, Icon } from 'react-native-elements';
 import { SimpleLineIcons } from '@expo/vector-icons';
 
-import { ENV_URL, timeSince } from '../utils/helpers';
+import { ENV_URL, timeSince, getUserId } from '../utils/helpers';
 
 export default class SocialFeedScreen extends React.Component {
   static navigationOptions = ({ navigation }) => ({
@@ -46,6 +46,15 @@ export default class SocialFeedScreen extends React.Component {
     this.setState({ fontLoaded: true });
 
     this.fetchPosts()
+
+    getUserId()
+      .then(res => {
+        this.setState({ userId: res })
+        this.fetchUser()
+      })
+      .catch(err => {
+        alert("An error occurred")
+      });
   }
 
   componentWillMount() {
@@ -66,6 +75,33 @@ export default class SocialFeedScreen extends React.Component {
 
         this.setState({ posts: responseJSON })
       } else {
+        const error = responseJSON.message
+
+        console.log("failed" + error);
+      }
+    } catch (error) {
+      console.log("failed" + error);
+    }
+  }
+
+  async fetchUser() {
+    this.setState({ isLoading: true });
+
+    try {
+      let response = await fetch(`${ENV_URL}/api/users/${this.state.userId}`, {
+        method: 'GET'
+      });
+
+      let responseJSON = null
+
+      if (response.status === 200) {
+        responseJSON = await response.json();
+
+        console.log(responseJSON);
+
+        this.setState({ user: responseJSON, isLoading: false })
+      } else {
+        responseJSON = await response.json();
         const error = responseJSON.message
 
         console.log("failed" + error);
@@ -155,12 +191,12 @@ export default class SocialFeedScreen extends React.Component {
 
   render() {
     const { navigate } = this.props.navigation
-    const { isLoading, posts } = this.state
+    const { isLoading, posts, user } = this.state
 
     return ( this.state.fontLoaded &&
       <View style={styles.mainContent}>
         <View style={styles.createPostContainer}>
-          <TouchableOpacity onPress={() => navigate('CreatePost', { member: posts[0].user })} style={styles.createPostLabelContainer}>
+          <TouchableOpacity onPress={() => navigate('CreatePost', { member: user })} style={styles.createPostLabelContainer}>
             <Text style={styles.createPostLabel}>Create Post</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.addPhotoIcon}>
@@ -169,7 +205,7 @@ export default class SocialFeedScreen extends React.Component {
               size={Platform.OS === 'ios' ? 22 : 25}
             />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.addPhotoIcon} onPress={() => navigate('CreatePost', { member: posts[0].user })}>
+          <TouchableOpacity style={styles.addPhotoIcon} onPress={() => navigate('CreatePost', { member: user })}>
             <SimpleLineIcons
               name='feed'
               size={Platform.OS === 'ios' ? 22 : 25}
