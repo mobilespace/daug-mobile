@@ -59,7 +59,7 @@ export default class CreatePostScreen extends React.Component {
     formBody = formBody.join("&");
 
     try {
-      let response = await fetch(`${ENV_URL}/api/users/19/posts`, {
+      let response = await fetch(`${ENV_URL}/api/users/1/posts`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'

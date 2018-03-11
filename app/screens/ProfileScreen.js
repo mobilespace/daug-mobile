@@ -64,7 +64,7 @@ export default class ProfileScreen extends React.Component {
     this.setState({ isLoading: true });
 
     try {
-      let response = await fetch(`${ENV_URL}/api/users/19`, {
+      let response = await fetch(`${ENV_URL}/api/users/1`, {
         method: 'GET'
       });
 

@@ -56,7 +56,7 @@ export default class EditProfileScreen extends React.Component {
     formBody = formBody.join("&");
 
     try {
-      let response = await fetch(`${ENV_URL}/api/users/19`, {
+      let response = await fetch(`${ENV_URL}/api/users/1`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
