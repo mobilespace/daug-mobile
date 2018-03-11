@@ -22,19 +22,34 @@ export function timeSince(timeStamp) {
   }
 
   if (secondsPast > 86400) {
-    day = timeStamp.getDate();
-    month = timeStamp.toDateString().match(/ [a-zA-Z]*/)[0].replace(" ", "");
-    year = timeStamp.getFullYear() == now.getFullYear() ? "" : " " + timeStamp.getFullYear();
+    day = new Date(timeStamp).getDate();
+    month = new Date(timeStamp).toDateString().match(/ [a-zA-Z]*/)[0].replace(" ", "");
+    year = new Date(timeStamp).getFullYear() == now.getFullYear() ? "" : " " + new Date(timeStamp).getFullYear();
     return day + " " + month + year;
   }
 }
 
 // Auth navigation helpers
 export const USER_KEY = "secret-user-key-123-xyz";
+export const USER_ID = 'some-random-user-id-123-xyz'
 
-export const onSignIn = () => AsyncStorage.setItem(USER_KEY, "true");
+export const onSignIn = (userId) => AsyncStorage.multiSet([[USER_KEY, "true"], [USER_ID, userId.toString()]])
 
-export const onSignOut = () => AsyncStorage.removeItem(USER_KEY);
+export const onSignOut = () => AsyncStorage.multiRemove([USER_KEY, USER_ID])
+
+export const getUserId = () => {
+  return new Promise((resolve, reject) => {
+    AsyncStorage.getItem(USER_ID)
+      .then(res => {
+        if (res !== null) {
+          resolve(res);
+        } else {
+          resolve(null);
+        }
+      })
+      .catch(err => reject(err));
+  });
+};
 
 export const isSignedIn = () => {
   return new Promise((resolve, reject) => {

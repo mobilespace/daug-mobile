@@ -15,7 +15,7 @@ import { Button } from 'react-native-elements';
 
 import LOGO_IMAGE from '../../assets/daug_logo.png';
 
-import { ENV_URL, onSignOut } from '../utils/helpers';
+import { ENV_URL, getUserId, onSignOut } from '../utils/helpers';
 
 export default class ProfileScreen extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -49,9 +49,16 @@ export default class ProfileScreen extends React.Component {
       'Righteous': require('../../assets/fonts/Righteous-Regular.ttf')
     });
 
-    this.setState({ fontLoaded: true });
+    getUserId()
+      .then(res => {
+        this.setState({ userId: res })
+        this.state.user === null && this.fetchUser()
+      })
+      .catch(err => {
+        alert("An error occurred")
+      });
 
-    this.state.user === null && this.fetchUser()
+    this.setState({ fontLoaded: true });
   }
 
   componentWillMount() {
@@ -64,7 +71,7 @@ export default class ProfileScreen extends React.Component {
     this.setState({ isLoading: true });
 
     try {
-      let response = await fetch(`${ENV_URL}/api/users/1`, {
+      let response = await fetch(`${ENV_URL}/api/users/${this.state.userId}`, {
         method: 'GET'
       });
 

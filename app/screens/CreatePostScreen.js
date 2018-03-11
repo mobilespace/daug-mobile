@@ -14,7 +14,7 @@ import { Font } from 'expo';
 import { SimpleLineIcons } from '@expo/vector-icons';
 import { Header } from 'react-native-elements';
 
-import { ENV_URL } from '../utils/helpers';
+import { ENV_URL, getUserId } from '../utils/helpers';
 
 export default class CreatePostScreen extends React.Component {
   constructor(props) {
@@ -34,6 +34,10 @@ export default class CreatePostScreen extends React.Component {
     await Font.loadAsync({
       'Righteous': require('../../assets/fonts/Righteous-Regular.ttf')
     });
+
+    getUserId()
+      .then(res => this.setState({ userId: res }))
+      .catch(err => { console.log(err); alert("An error occurred")});
 
     this.setState({ fontLoaded: true });
   }
@@ -59,7 +63,7 @@ export default class CreatePostScreen extends React.Component {
     formBody = formBody.join("&");
 
     try {
-      let response = await fetch(`${ENV_URL}/api/users/1/posts`, {
+      let response = await fetch(`${ENV_URL}/api/users/${this.state.userId}/posts`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
@@ -107,6 +111,11 @@ export default class CreatePostScreen extends React.Component {
   render() {
     const { goBack } = this.props.navigation
     const { member, newPostContent } = this.state
+
+    console.log('====================================');
+    console.log(this.state);
+    console.log("here");
+    console.log('====================================');
 
     return (
       <View style={styles.modalContainer}>

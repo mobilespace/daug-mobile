@@ -97,7 +97,7 @@ export default class LoginScreen extends React.Component {
           'Logged In!',
           'You have successfully logged in!',
           [
-            { text: "Continue", onPress: () => onSignIn().then(() => navigate("HomeTabs")) }
+            { text: "Continue", onPress: () => onSignIn(responseJSON.user.id).then(() => navigate("HomeTabs")) }
           ],
           { cancelable: false }
         )

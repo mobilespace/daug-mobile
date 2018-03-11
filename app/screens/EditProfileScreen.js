@@ -56,7 +56,7 @@ export default class EditProfileScreen extends React.Component {
     formBody = formBody.join("&");
 
     try {
-      let response = await fetch(`${ENV_URL}/api/users/1`, {
+      let response = await fetch(`${ENV_URL}/api/users/${this.state.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
@@ -136,7 +136,7 @@ export default class EditProfileScreen extends React.Component {
           <View style={styles.photoContainer}>
             <Image
               style={styles.profileImage}
-              source={{ uri: profile_image }}
+              source={{ uri: profile_image || '' }}
               resizeMode='cover'
             />
             <TouchableOpacity onPress={() => console.log("Change Profile Photo here")}>
