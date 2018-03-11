@@ -64,6 +64,8 @@ export default class SocialFeedScreen extends React.Component {
   }
 
   async fetchPosts() {
+    this.setState({ isLoading: true });
+
     try {
       const response = await fetch(`${ENV_URL}/api/feed`, {
         method: 'GET'
@@ -73,7 +75,7 @@ export default class SocialFeedScreen extends React.Component {
       if (response.status === 200) {
         console.log(responseJSON);
 
-        this.setState({ posts: responseJSON })
+        this.setState({ posts: responseJSON, isLoading: false })
       } else {
         const error = responseJSON.message
 
@@ -175,17 +177,19 @@ export default class SocialFeedScreen extends React.Component {
   }
 
   contentView() {
-    const { posts } = this.state
+    const { posts, isLoading } = this.state
 
     return (
-      <ScrollView>
+      <View style={{ flex: 1, backgroundColor: 'white' }}>
         <FlatList
           data={posts}
           extraData={this.state}
           keyExtractor={(item, index) => index}
           renderItem={({ item }) => this.renderMemberRow(item)}
+          onRefresh={() => this.fetchPosts()}
+          refreshing={isLoading}
         />
-      </ScrollView>
+      </View>
     )
   }
 
