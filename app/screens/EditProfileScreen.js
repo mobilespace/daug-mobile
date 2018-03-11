@@ -6,10 +6,12 @@ import {
   TouchableOpacity,
   Image,
   Alert,
+  ImageEditor,
   DeviceEventEmitter
 } from 'react-native';
-import { Font } from 'expo';
+import { Font, ImagePicker } from 'expo';
 import { Input, Header } from 'react-native-elements';
+import { RNS3 } from 'react-native-aws3';
 
 import { ENV_URL } from '../utils/helpers';
 
@@ -37,11 +39,12 @@ export default class EditProfileScreen extends React.Component {
   async submitProfile() {
     this.setState({ isLoading: true })
 
-    const { name, bio } = this.state
+    const { name, bio, profile_image } = this.state
 
     var details = {
       'name': name,
-      'bio': bio
+      'bio': bio,
+      'profile_image': profile_image
     };
 
     var formBody = [];
@@ -101,6 +104,59 @@ export default class EditProfileScreen extends React.Component {
     }
   }
 
+  pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      aspect: [4, 3],
+    });
+
+    if (result.cancelled) {
+      console.log('Profile Image cancelled');
+      return;
+    }
+
+    let resizedUri = await new Promise((resolve, reject) => {
+      ImageEditor.cropImage(result.uri,
+        {
+          offset: { x: 0, y: 0 },
+          size: { width: result.width, height: result.height },
+          displaySize: { width: result.width, height: result.height },
+          resizeMode: 'contain',
+        },
+        (uri) => resolve(uri),
+        () => reject(),
+      );
+    });
+
+    // this gives you a rct-image-store URI or a base64 image tag that
+    // you can use from ImageStore
+
+    const file = {
+      // `uri` can also be a file system path (i.e. file://)
+      uri: resizedUri,
+      name: `user_${this.state.id}_profile_image_${new Date().getTime()}.png`,
+      type: "image/png"
+    }
+
+    const options = {
+      keyPrefix: "uploads/",
+      bucket: "daug",
+      region: "us-east-1",
+      accessKey: "AKIAIKG2UJ7AHBKJ5N2Q",
+      secretKey: "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",
+      successActionStatus: 201
+    }
+
+    RNS3.put(file, options).then(response => {
+      if (response.status !== 201)
+        throw new Error("Failed to upload image to S3");
+
+        console.log(response.body);
+
+        this.setState({ profile_image: response.body.postResponse.location });
+    });
+  };
+
   render() {
     const { name, bio, email, profile_image } = this.state
 
@@ -139,7 +195,7 @@ export default class EditProfileScreen extends React.Component {
               source={{ uri: profile_image || '' }}
               resizeMode='cover'
             />
-            <TouchableOpacity onPress={() => console.log("Change Profile Photo here")}>
+            <TouchableOpacity onPress={() => this.pickImage()}>
               <Text style={styles.changePhotoLabel}>Change Photo</Text>
             </TouchableOpacity>
           </View>

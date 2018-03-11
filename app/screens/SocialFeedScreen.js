@@ -138,7 +138,7 @@ export default class SocialFeedScreen extends React.Component {
         <TouchableOpacity onPress={() => navigate('Post', { post: member })} activeOpacity={1}>
           <View style={styles.postContentContainer}>
             {member.image && <Image source={{ uri: member.image || ''}} style={styles.postImage} resizeMode="cover" />}
-            <Text style={styles.postCaption}>{member.description}</Text>
+            {member.description && member.description.length > 0 && <Text style={styles.postCaption}>{member.description}</Text>}
           </View>
         </TouchableOpacity>
         <View style={styles.postFooterContainer}>
@@ -199,7 +199,7 @@ export default class SocialFeedScreen extends React.Component {
           <TouchableOpacity onPress={() => navigate('CreatePost', { member: user })} style={styles.createPostLabelContainer}>
             <Text style={styles.createPostLabel}>Create Post</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.addPhotoIcon}>
+          <TouchableOpacity style={styles.addPhotoIcon} onPress={() => navigate('CreatePost', { member: user })}>
             <SimpleLineIcons
               name='picture'
               size={Platform.OS === 'ios' ? 22 : 25}
