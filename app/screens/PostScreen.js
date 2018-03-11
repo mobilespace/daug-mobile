@@ -20,7 +20,7 @@ export default class PostScreen extends React.Component {
     headerTitleStyle: {
       fontSize: 20,
       fontFamily: 'Righteous'
-    },
+    }
   });
 
   constructor(props) {

@@ -95,7 +95,7 @@ export default class SignupScreen extends React.Component {
           'Signed Up!',
           'You have successfully signed up!',
           [
-            { text: "Continue", onPress: () => navigate('HomeTabs') }
+            { text: "Continue", onPress: () => onSignIn().then(() => navigate("HomeTabs")) }
           ],
           { cancelable: false }
         )

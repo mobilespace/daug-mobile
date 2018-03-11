@@ -3,17 +3,26 @@ import { StackNavigator } from 'react-navigation';
 import IntroStack from './IntroStack';
 import HomeTabs from './HomeTabs';
 
-const RootNavigator = StackNavigator({
-  IntroStack: {
-    screen: IntroStack
-  },
-  HomeTabs: {
-    screen: HomeTabs
-  }
-}, {
-  initialRouteName: 'IntroStack',
-  mode: 'modal',
-  headerMode: 'none'
-});
-
-export default RootNavigator;
+export const createRootNavigator = (signedIn = false) => {
+  return StackNavigator(
+    {
+      IntroStack: {
+        screen: IntroStack,
+        navigationOptions: {
+          gesturesEnabled: false
+        }
+      },
+      HomeTabs: {
+        screen: HomeTabs,
+        navigationOptions: {
+          gesturesEnabled: false
+        }
+      }
+    },
+    {
+      headerMode: "none",
+      mode: "modal",
+      initialRouteName: signedIn ? "HomeTabs" : "IntroStack"
+    }
+  );
+};

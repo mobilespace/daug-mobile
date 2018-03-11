@@ -13,7 +13,7 @@ import { SimpleLineIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 
 import IntroSlider from '../components/IntroSlider';
 
-import { ENV_URL } from '../utils/helpers';
+import { ENV_URL, onSignIn } from '../utils/helpers';
 
 import LOGO_IMAGE from '../../assets/daug_logo.png';
 
@@ -97,7 +97,7 @@ export default class LoginScreen extends React.Component {
           'Logged In!',
           'You have successfully logged in!',
           [
-            { text: "Continue", onPress: () => navigate('HomeTabs') }
+            { text: "Continue", onPress: () => onSignIn().then(() => navigate("HomeTabs")) }
           ],
           { cancelable: false }
         )

@@ -15,7 +15,7 @@ import { Button } from 'react-native-elements';
 
 import LOGO_IMAGE from '../../assets/daug_logo.png';
 
-import { ENV_URL } from '../utils/helpers';
+import { ENV_URL, onSignOut } from '../utils/helpers';
 
 export default class ProfileScreen extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -201,7 +201,7 @@ export default class ProfileScreen extends React.Component {
                 text="LOGOUT"
                 buttonStyle={styles.logoutButton}
                 textStyle={styles.logoutText}
-                onPress={() => navigate('IntroStack')}
+                onPress={() => onSignOut().then(() => navigate("IntroStack"))}
               />
             </View>
           }
