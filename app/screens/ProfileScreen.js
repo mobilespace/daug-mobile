@@ -8,7 +8,8 @@ import {
   TouchableHighlight,
   TouchableOpacity,
   ActivityIndicator,
-  DeviceEventEmitter
+  DeviceEventEmitter,
+  Alert
 } from 'react-native';
 import { Font, LinearGradient } from 'expo';
 import { Button } from 'react-native-elements';
@@ -63,6 +64,14 @@ export default class ProfileScreen extends React.Component {
         });
     } else {
       this.fetchUser()
+
+      getUserId()
+        .then(res => {
+          this.setState({ post_detail_home_user_id: res })
+        })
+        .catch(err => {
+          alert("An error occurred")
+        });
     }
 
     this.setState({ fontLoaded: true });
@@ -98,6 +107,57 @@ export default class ProfileScreen extends React.Component {
       }
     } catch (error) {
       console.log("failed" + error);
+    }
+  }
+
+  async followUser() {
+    const { post_detail_home_user_id, userId } = this.state
+
+    try {
+      let response = await fetch(`${ENV_URL}/api/users/${post_detail_home_user_id}/follow/${userId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+        },
+        body: null
+      });
+
+      let responseJSON = null
+
+      if (response.status === 201) {
+        responseJSON = response.json();
+
+        console.log(responseJSON)
+
+        this.fetchUser()
+        this.setState({ following: true })
+
+        Alert.alert(
+          'Following user!',
+          '',
+          [
+            {
+              text: "Dismiss", onPress: () => {
+                console.log("User followed!")
+              }
+            }
+          ],
+          { cancelable: false }
+        )
+      } else {
+        responseJSON = await response.json();
+        const error = responseJSON.message
+
+        console.log(responseJSON)
+
+        this.setState({ isLoading: false, errors: responseJSON.errors, following: false })
+
+        Alert.alert('Unable to follow user', `${error}`)
+      }
+    } catch (error) {
+      this.setState({ isLoading: false, error, following: false })
+
+      Alert.alert('Unable to follow user', `${error}`)
     }
   }
 
@@ -171,11 +231,11 @@ export default class ProfileScreen extends React.Component {
                     <Text style={styles.statsLabel}>Posts</Text>
                   </View>
                   <View style={styles.profileStat}>
-                    <Text style={styles.statsLabel}>{user.followers || 0}</Text>
+                    <Text style={styles.statsLabel}>{user.followers && user.followers.length || 0}</Text>
                     <Text style={styles.statsLabel}>Followers</Text>
                   </View>
                   <View style={styles.profileStat}>
-                    <Text style={styles.statsLabel}>{user.following || 0}</Text>
+                    <Text style={styles.statsLabel}>{user.following && user.following.length || 0}</Text>
                     <Text style={styles.statsLabel}>Following</Text>
                   </View>
                 </View>
@@ -188,11 +248,11 @@ export default class ProfileScreen extends React.Component {
                         textStyle={styles.editProfileText}
                         onPress={() => navigate('EditProfile', { user: user })}
                       /> :
-                      <Button text="Follow"
+                      <Button text={this.state.following ? 'Following' : 'Follow'}
                         containerStyle={{ marginBottom: 10 }}
-                        buttonStyle={styles.followButton}
-                        textStyle={styles.followText}
-                        onPress={() => console.log("Followed")}
+                        buttonStyle={this.state.following ? styles.followingButton : styles.followButton}
+                        textStyle={this.state.following ? styles.followingText : styles.followText}
+                        onPress={() => this.followUser()}
                       />
                   }
                 </View>
@@ -316,10 +376,21 @@ const styles = StyleSheet.create({
     height: 30,
     borderRadius: 5
   },
+  followingButton: {
+    backgroundColor: 'transparent',
+    borderColor: '#aaaaaa',
+    borderWidth: 2,
+    width: 150,
+    height: 30,
+    borderRadius: 5
+  },
   followText: {
     fontFamily: 'Righteous',
     color: 'white',
     fontSize: 13
+  },
+  followingText: {
+    color: 'black',
   },
   headerFooterViewContainer: {
     justifyContent: 'center'
