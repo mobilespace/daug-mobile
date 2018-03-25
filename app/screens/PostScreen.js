@@ -256,6 +256,44 @@ export default class PostScreen extends React.Component {
     )
   }
 
+  async postLike() {
+    const { postId, user } = this.state
+
+    try {
+      let response = await fetch(`${ENV_URL}/api/posts/${postId}/like/${user.id}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+        },
+        body: null
+      });
+
+      let responseJSON = null
+
+      if (response.status === 201) {
+        responseJSON = await response.json();
+
+        console.log(responseJSON)
+
+        this.fetchPost()
+        this.setState({ liked: true })
+      } else {
+        responseJSON = await response.json();
+        const error = responseJSON.message
+
+        console.log(responseJSON)
+
+        this.setState({ isLoading: false, errors: responseJSON.errors, liked: false })
+
+        Alert.alert('Unable to like post', `${error}`)
+      }
+    } catch (error) {
+      this.setState({ isLoading: false, error, liked: false })
+
+      Alert.alert('Unable to like post', `${error}`)
+    }
+  }
+
   loadingView() {
     return (
       <View style={styles.loadingView}>
@@ -305,7 +343,7 @@ export default class PostScreen extends React.Component {
               <Icon
                 name={liked ? "ios-heart" : "ios-heart-outline"}
                 color={liked ? 'red' : null} type="ionicon" size={25}
-                onPress={() => this.setState({ liked: !liked })}
+                onPress={() => this.postLike()}
               />
               <Text style={styles.postActionText}>{member.likes && member.likes.length || 0}</Text>
             </View>

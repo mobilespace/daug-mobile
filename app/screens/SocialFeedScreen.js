@@ -159,7 +159,7 @@ export default class SocialFeedScreen extends React.Component {
             <Icon
               name={liked ? "ios-heart" : "ios-heart-outline"}
               color={liked ? 'red' : null} type="ionicon" size={25}
-              onPress={() => this.setState({ liked: !liked })}
+              onPress={() => navigate('Post', { postId: member.id })}
             />
             <Text style={styles.postActionText}>{member.likes && member.likes.length || 0}</Text>
           </View>
