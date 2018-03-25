@@ -116,26 +116,53 @@ Social Feed screen is based on **Facebook**.
 ### Objectives
 
 - Learn how to make backend API calls and User Authentication
-- Learn how to setup and use Redux and AsyncStorage
+- Learn how to setup an Authnetication UI flow using AsyncStorage
 - Serve as an React Native app that you can showcase on your porfolio
 
 #### URL: [https://daug-app.herokuapp.com](https://daug-app.herokuapp.com)
 
 ### API
 
-- `/api` => `GET` => Used to check API endpoint status
-  	- `/users/all` => `GET` => Lists of all users
-  	- `/posts/all` => `GET` => Lists of all posts
-  	- `/users/:userId` => `GET` => Returns a user
-  	- `/users/:userId` => `PUT` => Updates a user
-  	- `/posts/:postId` => `GET` => Returns a post
-  	- `/posts/:postId` => `POST` => Creates a post
-  	- `/posts/:postId` => `PUT` => Updates a post
-  	- `/posts/:postId` => `DELETE` => Deletes a post
-  	- `/feed` => `GET` => Returns the Social Feed
-- `/auth` => `GET` => Used to check AUTH endpoint status
-  - `/signup` => `POST` = `( name, email, password )` => Used to create a new user
-  - `/login` => `POST` = `( email, password )` => Used to validate an existing user
+```
+// User Authentication endpoints
+router.post('auth/signup'); // CREATE
+router.post('auth/login'); // VALIDATE / READ
+
+
+
+// All data endpoints
+router.get('api/users/all'); // READ
+router.get('api/posts/all'); // READ
+
+// Social Feed endpoints
+router.get('api/feed'); // READ
+
+// User data endpoints
+router.get('api/users/:userId'); // READ
+router.put('api/users/:userId'); // UPDATE
+
+// Posts endpoints
+router.get('api/posts/:postId'); // READ
+router.post('api/users/:userId/posts'); // CREATE
+router.put('api/users/:userId/posts/:postId'); // UPDATE
+router.delete('api/users/:userId/posts/:postId'); // DELETE
+
+// Follower endpoints
+router.get('api/users/:userId/followers'); // READ
+router.get('api/users/:userId/following'); // READ
+router.post('api/users/:userId/follow/:followingId'); // CREATE
+router.post('api/users/:userId/unfollow/:followingId'); // DELETE
+
+// Like endpoints
+router.get('api/posts/:postId/likes'); // READ
+router.post('api/posts/:postId/like/:userId'); // CREATE
+router.post('api/posts/:postId/unlike/:userId'); // DELETE
+
+// Comment endpoints
+router.get('api/posts/:postId/comments'); // READ
+router.post('api/posts/:postId/comment/:userId'); // CREATE
+router.post('api/posts/:postId/uncomment/:userId'); // DELETE
+```
 
 ### TODO
 
@@ -156,11 +183,24 @@ Social Feed screen is based on **Facebook**.
 - [x] Edit Profile Screen - Make **`PUT`** request to **`/api/users/:userId`** to update a user's profile information
 	- [x] :star: **Bonus:** Use `DeviceEventEmitter` to emit `user_profile_updated` event once user data is updated
 - [x] Setup Authentication flow for app using `AsyncStorage`. Once the user has logged in then take them to home page each time they open the app again
-- [ ] Use Redux to share state between tab bar & screens
+
+## Wrap up
+
+### Objectives
+
+- Add UI polish, tie up loose end and add remaining functionality
+- Update Readme with app details and publish Expo app for demo
+- Serve as an React Native app that you can showcase on your porfolio
+
+### TODO
+- [ ] Add Like, Comment and Follow API functionality
+- [ ] Add Camera functionality to Create Post screen
+- [ ] Clean up and format `README.MD` to showcase app - [follow this template](https://github.com/mobilespace/MobileGuides/blob/master/showcase_app_readme.md)
+- [x] :star: **Bonus:** Add phone number UI to Edit Profile screen
+- [x] :star: **Bonus:** Use Redux to share state between tab bar & screens
 - [ ] Add working gif of app to `README.MD`
 
 ### Demo
-
 
 ## Submission
 
