@@ -120,13 +120,13 @@ export default class SocialFeedScreen extends React.Component {
     return (
       <View style={styles.postContainer} key={member}>
         <View style={styles.postHeaderContainer}>
-          <TouchableOpacity onPress={() => navigate('Profile', { isHeaderShow: true, user: member.user })} activeOpacity={0.8}>
+          <TouchableOpacity onPress={() => navigate('Profile', { isHeaderShow: true, userId: member.user.id })} activeOpacity={0.8}>
             <Image source={{ uri: member.user.profile_image || '' }} style={styles.avatar} />
           </TouchableOpacity>
           <View style={styles.postUsernameLocationContainer}>
             <TouchableOpacity
               style={[styles.postUsernameView, member.location && { marginTop: 10 }]}
-              onPress={() => navigate('Profile', { isHeaderShow: true, user: member.user })}
+              onPress={() => navigate('Profile', { isHeaderShow: true, userId: member.user.id })}
             >
               <Text style={styles.nameLabel}>{member.user.name}</Text>
             </TouchableOpacity>
@@ -137,7 +137,7 @@ export default class SocialFeedScreen extends React.Component {
             }
           </View>
         </View>
-        <TouchableOpacity onPress={() => navigate('Post', { post: member })} activeOpacity={1}>
+        <TouchableOpacity onPress={() => navigate('Post', { postId: member.id })} activeOpacity={1}>
           <View style={styles.postContentContainer}>
             {member.image && <Image source={{ uri: member.image || ''}} style={styles.postImage} resizeMode="cover" />}
             {member.description && member.description.length > 0 && <Text style={styles.postCaption}>{member.description}</Text>}
@@ -151,7 +151,7 @@ export default class SocialFeedScreen extends React.Component {
             <Icon
               name={commented ? "ios-chatbubbles" : "ios-chatbubbles-outline"}
               color={commented ? 'black' : null} type="ionicon" size={25}
-              onPress={() => navigate('Post', { post: member })}
+              onPress={() => navigate('Post', { postId: member.id })}
           />
             <Text style={styles.postActionText}>{member.comments && member.comments.length || 0}</Text>
           </View>

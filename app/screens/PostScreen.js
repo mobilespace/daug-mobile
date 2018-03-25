@@ -6,13 +6,14 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
-  Alert
+  Alert,
+  ActivityIndicator
 } from 'react-native';
 import { Font } from 'expo';
 
 import { Button, Icon, Input } from 'react-native-elements';
 
-import { ENV_URL, timeSince } from '../utils/helpers';
+import { ENV_URL, timeSince, getUserId } from '../utils/helpers';
 
 export default class PostScreen extends React.Component {
   static navigationOptions = ({ navigation }) => ({
@@ -27,11 +28,12 @@ export default class PostScreen extends React.Component {
   constructor(props) {
     super(props);
 
-    const { post } = props.navigation.state.params
+    const postId = props.navigation.state.params && props.navigation.state.params.postId
 
     this.state = {
       fontLoaded: false,
-      member: post,
+      postId: postId || null,
+      member: null,
       liked: false,
       comment: null
     };
@@ -42,15 +44,43 @@ export default class PostScreen extends React.Component {
       'Righteous': require('../../assets/fonts/Righteous-Regular.ttf')
     });
 
+    const { postId } = this.state
+
+    if (postId === null) {
+      Alert.alert(
+        'Unable to display Post!',
+        'Please try again later',
+        [
+          {
+            text: "OK", onPress: () => {
+              this.props.navigation.goBack()
+            }
+          }
+        ],
+        { cancelable: false }
+      )
+    } else {
+      this.fetchPost()
+    }
+
+    getUserId()
+      .then(res => {
+        this.setState({ userId: res })
+        this.fetchUser()
+      })
+      .catch(err => {
+        alert("An error occurred")
+      });
+
     this.setState({ fontLoaded: true });
   }
 
   async fetchPost() {
     this.setState({ isLoading: true });
-    const { member } = this.state
+    const { postId } = this.state
 
     try {
-      const response = await fetch(`${ENV_URL}/api/posts/${member.id}`, {
+      const response = await fetch(`${ENV_URL}/api/posts/${postId}`, {
         method: 'GET'
       });
       const responseJSON = await response.json();
@@ -69,14 +99,45 @@ export default class PostScreen extends React.Component {
     }
   }
 
+  async fetchUser() {
+    this.setState({ isLoading: true });
+
+    try {
+      let response = await fetch(`${ENV_URL}/api/users/${this.state.userId}`, {
+        method: 'GET'
+      });
+
+      let responseJSON = null
+
+      if (response.status === 200) {
+        responseJSON = await response.json();
+
+        console.log(responseJSON);
+
+        this.setState({ user: responseJSON, isLoading: false })
+      } else {
+        responseJSON = await response.json();
+        const error = responseJSON.message
+
+        console.log("failed" + error);
+      }
+    } catch (error) {
+      console.log("failed" + error);
+    }
+  }
+
   displayComment(comment, index) {
+    const { navigate } = this.props.navigation
+
     return (
       <View style={styles.commentContainer} key={index}>
-        <TouchableOpacity activeOpacity={0.8}>
+        <TouchableOpacity activeOpacity={0.8}
+          onPress={() => navigate('Profile', { isHeaderShow: true, userId: comment.user.id })}>
           <Image source={{ uri: comment.user.profile_image || '' }} style={styles.commentAvatar} />
         </TouchableOpacity>
         <View style={styles.postUsernameLocationContainer}>
-          <TouchableOpacity style={styles.postUsernameView}>
+          <TouchableOpacity style={styles.postUsernameView}
+            onPress={() => navigate('Profile', { isHeaderShow: true, userId: comment.user.id })}>
             <Text style={styles.commentUsernameLabel}>{comment.user.name}</Text>
           </TouchableOpacity>
           <View style={styles.postLocationView}>
@@ -102,7 +163,7 @@ export default class PostScreen extends React.Component {
   }
 
   async postComment() {
-    const { comment } = this.state
+    const { comment, postId, user } = this.state
 
     var details = {
       'comment': comment
@@ -120,7 +181,7 @@ export default class PostScreen extends React.Component {
     formBody = formBody.join("&");
 
     try {
-      let response = await fetch(`${ENV_URL}/api/posts/84/comment/27`, {
+      let response = await fetch(`${ENV_URL}/api/posts/${postId}/comment/${user.id}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
@@ -195,23 +256,31 @@ export default class PostScreen extends React.Component {
     )
   }
 
-  render() {
+  loadingView() {
+    return (
+      <View style={styles.loadingView}>
+        <ActivityIndicator size="large" />
+      </View>
+    )
+  }
+
+  contentView() {
     const { navigate } = this.props.navigation
     const { member, liked } = this.state
 
-    const Component = member.comments ? ScrollView : View
+    const Component = member && member.comments ? ScrollView : View
 
     return (
       <Component style={styles.mainContent}>
         <View style={styles.postContainer} key={member}>
           <View style={styles.postHeaderContainer}>
-            <TouchableOpacity onPress={() => navigate('Profile', { isHeaderShow: true, user: member.user })} activeOpacity={0.8}>
+            <TouchableOpacity onPress={() => navigate('Profile', { isHeaderShow: true, userId: member.user.id })} activeOpacity={0.8}>
               <Image source={{ uri: member.user.profile_image || '' }} style={styles.avatar} />
             </TouchableOpacity>
             <View style={styles.postUsernameLocationContainer}>
               <TouchableOpacity
                 style={[styles.postUsernameView, member.location && { marginTop: 10 }]}
-                onPress={() => navigate('Profile', { isHeaderShow: true, user: member.user })}
+                onPress={() => navigate('Profile', { isHeaderShow: true, userId: member.user.id })}
               >
                 <Text style={styles.nameLabel}>{member.user.name}</Text>
               </TouchableOpacity>
@@ -248,11 +317,24 @@ export default class PostScreen extends React.Component {
       </Component>
     )
   }
+
+  render() {
+    const { member, isLoading, fontLoaded } = this.state
+
+    return (
+      fontLoaded && (isLoading || member === null ? this.loadingView() : this.contentView())
+    );
+  }
 }
 
 const styles = StyleSheet.create({
   mainContent: {
     flex: 1
+  },
+  loadingView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   postContainer: {
     backgroundColor: 'white',

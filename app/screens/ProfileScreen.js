@@ -33,13 +33,14 @@ export default class ProfileScreen extends React.Component {
   constructor(props) {
     super(props);
 
-    const user = props.navigation.state.params && props.navigation.state.params.user
+    const userId = props.navigation.state.params && props.navigation.state.params.userId
     const isHeaderShow = props.navigation.state.params && props.navigation.state.params.isHeaderShow
 
     this.state = {
       isLoading: false,
       fontLoaded: false,
-      user: user || null,
+      userId: userId || null,
+      user: null,
       isHeaderShow: isHeaderShow || false
     };
   }
@@ -49,14 +50,20 @@ export default class ProfileScreen extends React.Component {
       'Righteous': require('../../assets/fonts/Righteous-Regular.ttf')
     });
 
-    getUserId()
-      .then(res => {
-        this.setState({ userId: res })
-        this.state.user === null && this.fetchUser()
-      })
-      .catch(err => {
-        alert("An error occurred")
-      });
+    const { userId } = this.state
+
+    if (userId === null) {
+      getUserId()
+        .then(res => {
+          this.setState({ userId: res })
+          this.state.user === null && this.fetchUser()
+        })
+        .catch(err => {
+          alert("An error occurred")
+        });
+    } else {
+      this.fetchUser()
+    }
 
     this.setState({ fontLoaded: true });
   }
