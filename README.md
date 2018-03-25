@@ -202,9 +202,11 @@ router.post('api/posts/:postId/uncomment/:userId'); // DELETE
 - [ ] :star: **Bonus:** Add phone number UI to Edit Profile screen
 - [ ] :star: **Bonus:** Add Camera functionality to Create Post screen
 - [ ] :star: **Bonus:** Use Redux to share state between tab bar & screens
-- [ ] Add working gif of app to `README.MD`
+- [x] Add working gif of app to `README.MD`
 
 ### Demo
+
+![assignment_2](https://i.imgur.com/kFusH4I.gif)
 
 ## Submission
 
