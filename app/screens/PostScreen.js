@@ -7,11 +7,13 @@ import {
   Image,
   ScrollView,
   Alert,
-  ActivityIndicator
+  ActivityIndicator,
+  KeyboardAvoidingView
 } from 'react-native';
 import { Font } from 'expo';
 
 import { Button, Icon, Input } from 'react-native-elements';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import { ENV_URL, timeSince, getUserId } from '../utils/helpers';
 
@@ -306,10 +308,12 @@ export default class PostScreen extends React.Component {
     const { navigate } = this.props.navigation
     const { member, liked } = this.state
 
-    const Component = member && member.comments ? ScrollView : View
+    const Component = member && member.comments ? KeyboardAwareScrollView : KeyboardAvoidingView
 
     return (
-      <Component style={styles.mainContent}>
+      <Component style={styles.mainContent}
+        resetScrollToCoords={{ x: 0, y: 0 }}
+        scrollEnabled={true}>
         <View style={styles.postContainer} key={member}>
           <View style={styles.postHeaderContainer}>
             <TouchableOpacity onPress={() => navigate('Profile', { isHeaderShow: true, userId: member.user.id })} activeOpacity={0.8}>
@@ -353,8 +357,8 @@ export default class PostScreen extends React.Component {
         {member.comments && this.renderComments()}
         {this.renderAddComment()}
       </Component>
-    )
-  }
+      )
+    }
 
   render() {
     const { member, isLoading, fontLoaded } = this.state
