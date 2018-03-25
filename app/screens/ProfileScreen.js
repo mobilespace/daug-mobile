@@ -9,7 +9,8 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   DeviceEventEmitter,
-  Alert
+  Alert,
+  Dimensions
 } from 'react-native';
 import { Font, LinearGradient } from 'expo';
 import { Button } from 'react-native-elements';
@@ -17,6 +18,8 @@ import { Button } from 'react-native-elements';
 import LOGO_IMAGE from '../../assets/daug_logo.png';
 
 import { ENV_URL, getUserId, onSignOut } from '../utils/helpers';
+
+const DEVICE_WIDTH = Dimensions.get('window').width;
 
 export default class ProfileScreen extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -162,20 +165,17 @@ export default class ProfileScreen extends React.Component {
   }
 
   displayPost(post, index) {
+    const { navigate } = this.props.navigation
+
     return (
-      <View style={styles.commentContainer} key={index}>
-        <TouchableOpacity onPress={() => navigate('Profile', { admin: 'false' })} activeOpacity={0.8}>
-          <Image source={{ uri: post.image }} style={styles.commentAvatar} />
-        </TouchableOpacity>
-        <View style={styles.postUsernameLocationContainer}>
-          <TouchableOpacity
-            style={styles.postUsernameView}
-            onPress={() => navigate('Profile', { admin: 'false' })}
-          >
-            <Text style={styles.commentUsernameLabel}>{post.caption}</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
+      <TouchableOpacity
+        style={[styles.postIconContainer, { width: DEVICE_WIDTH / 3, height: DEVICE_WIDTH / 3 }]}
+        key={index}
+        onPress={() => navigate('Post', { postId: post.id })}
+        activeOpacity={1}
+      >
+        {post.image && <Image source={{ uri: post.image || '' }} style={styles.postImage} resizeMode="cover" />}
+      </TouchableOpacity>
     )
   }
 
@@ -269,15 +269,17 @@ export default class ProfileScreen extends React.Component {
           </View>
           <Text style={styles.sectionHeaderText}>{user.posts ? user.posts.length : 'NO'} POSTS</Text>
           {
-            !isHeaderShow &&
+            !isHeaderShow ?
             <View style={styles.contentViewContainer}>
+              {this.renderPosts()}
               <Button
                 text="LOGOUT"
                 buttonStyle={styles.logoutButton}
                 textStyle={styles.logoutText}
                 onPress={() => onSignOut().then(() => navigate("IntroStack"))}
               />
-            </View>
+            </View> :
+            this.renderPosts()
           }
         </View>
       </ScrollView>
@@ -417,13 +419,12 @@ const styles = StyleSheet.create({
     fontSize: 15
   },
   contentViewContainer: {
-    height: 400,
-    justifyContent: 'center',
-    alignItems: 'center'
   },
   logoutButton: {
     width: 220,
     height: 50,
+    marginTop: 0,
+    marginBottom: 20,
     backgroundColor: '#28ABEC'
   },
   logoutText: {
@@ -438,6 +439,18 @@ const styles = StyleSheet.create({
     marginLeft: 10
   },
   postsContainer: {
-    backgroundColor: 'white'
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    paddingTop: 10,
+    paddingBottom: 20
+  },
+  postIconContainer: {
+    borderWidth: 1,
+    borderColor: '#aaaaaa',
+    backgroundColor: '#f9f9f9'
+  },
+  postImage: {
+    flex: 1
   }
 });

@@ -104,7 +104,7 @@ Social Feed screen is based on **Facebook**.
 - [x] Design & build a Post Details Screen
 - [x] Design & build a Create Post Screen
 - [x] Setup a **SocialStack** (using StackNavigator) for the Social Feed Screen (root), Post Details Screen (push) & Create Post Screen (modal) with mode: "modal" and custom RNE header component
-- [ ] :star: **Bonus:** Display Posts on ProfileScreen
+- [x] :star: **Bonus:** Display Posts on ProfileScreen
 - [ ] :star: **Bonus:** Setup a **HomeNavigator**(using DrawerNavigator) with the **HomeTabs** (as root) and update **RootNavigator** to use **HomeNavigator** instead of **HomeTabs**
 - [x] Add working gif of app to `README.MD`
 
@@ -197,10 +197,10 @@ router.post('api/posts/:postId/uncomment/:userId'); // DELETE
 - Serve as an React Native app that you can showcase on your porfolio
 
 ### TODO
-- [ ] Add Like, Comment and Follow API functionality
-- [ ] Add Camera functionality to Create Post screen
-- [ ] Clean up and format `README.MD` to showcase app - [follow this template](https://github.com/mobilespace/MobileGuides/blob/master/showcase_app_readme.md#readme-template-for-showcasing-a-mobile-app)
+- [x] Add Like, Comment and Follow API functionality
+- [x] Clean up and format `README.MD` to showcase app - [follow this template](https://github.com/mobilespace/MobileGuides/blob/master/showcase_app_readme.md#readme-template-for-showcasing-a-mobile-app)
 - [ ] :star: **Bonus:** Add phone number UI to Edit Profile screen
+- [ ] :star: **Bonus:** Add Camera functionality to Create Post screen
 - [ ] :star: **Bonus:** Use Redux to share state between tab bar & screens
 - [ ] Add working gif of app to `README.MD`
 
