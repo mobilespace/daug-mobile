@@ -206,7 +206,7 @@ router.post('api/posts/:postId/uncomment/:userId'); // DELETE
 
 ### Demo
 
-![assignment_2](https://i.imgur.com/kFusH4I.gif)
+<img src="/screenshots/daug-app-wrap-up.gif" width="300" />
 
 ## Submission
 
