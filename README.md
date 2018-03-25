@@ -119,16 +119,19 @@ Social Feed screen is based on **Facebook**.
 - Learn how to setup an Authnetication UI flow using AsyncStorage
 - Serve as an React Native app that you can showcase on your porfolio
 
-#### URL: [https://daug-app.herokuapp.com](https://daug-app.herokuapp.com)
+#### URL: [https://daug-app.herokuapp.com/](https://daug-app.herokuapp.com)
 
 ### API
 
 ```
+**Namespace:** `/auth`
+
 // User Authentication endpoints
 router.post('auth/signup'); // CREATE
 router.post('auth/login'); // VALIDATE / READ
 
 
+**Namespace:** `/api`
 
 // All data endpoints
 router.get('api/users/all'); // READ
@@ -176,6 +179,7 @@ router.post('api/posts/:postId/uncomment/:userId'); // DELETE
 	- [x] :star: **Bonus:** Use `DeviceEventEmitter` to trigger fetching posts when the `new_post_created` event is emitted
 	- [x] :star: **Bonus:** Use `timeSince()` utility function to show relative times for post creation
 - [x] Create Post Screen - Make **`POST`** request to **`/api/users/:userId/posts`** to create a new post by the user
+  - [x] Use ImagePicker (expo) to allow the user to add a picture to the post [Snack demo here](https://snack.expo.io/SyyDo-rr-)
 	- [x] :star: **Bonus:** Use `DeviceEventEmitter` to emit `new_post_created` event once post is created
 - [x] Profile Screen - Make **`GET`** request to **`/api/users/:userId`** to get all the profile data
 	- [x] :star: **Bonus:** Use `ActivityIndicator` to show placeholder loading when fetching profile data
@@ -196,8 +200,8 @@ router.post('api/posts/:postId/uncomment/:userId'); // DELETE
 - [ ] Add Like, Comment and Follow API functionality
 - [ ] Add Camera functionality to Create Post screen
 - [ ] Clean up and format `README.MD` to showcase app - [follow this template](https://github.com/mobilespace/MobileGuides/blob/master/showcase_app_readme.md)
-- [x] :star: **Bonus:** Add phone number UI to Edit Profile screen
-- [x] :star: **Bonus:** Use Redux to share state between tab bar & screens
+- [ ] :star: **Bonus:** Add phone number UI to Edit Profile screen
+- [ ] :star: **Bonus:** Use Redux to share state between tab bar & screens
 - [ ] Add working gif of app to `README.MD`
 
 ### Demo
