@@ -5,11 +5,12 @@ import {
   Text,
   TouchableOpacity,
   Image,
-  ScrollView
+  ScrollView,
+  Alert
 } from 'react-native';
 import { Font } from 'expo';
 
-import { Button, Icon } from 'react-native-elements';
+import { Button, Icon, Input } from 'react-native-elements';
 
 import { ENV_URL, timeSince } from '../utils/helpers';
 
@@ -31,8 +32,8 @@ export default class PostScreen extends React.Component {
     this.state = {
       fontLoaded: false,
       member: post,
-      commented: false,
-      liked: false
+      liked: false,
+      comment: null
     };
   }
 
@@ -42,6 +43,30 @@ export default class PostScreen extends React.Component {
     });
 
     this.setState({ fontLoaded: true });
+  }
+
+  async fetchPost() {
+    this.setState({ isLoading: true });
+    const { member } = this.state
+
+    try {
+      const response = await fetch(`${ENV_URL}/api/posts/${member.id}`, {
+        method: 'GET'
+      });
+      const responseJSON = await response.json();
+
+      if (response.status === 200) {
+        console.log(responseJSON);
+
+        this.setState({ member: responseJSON, isLoading: false })
+      } else {
+        const error = responseJSON.message
+
+        console.log("failed" + error);
+      }
+    } catch (error) {
+      console.log("failed" + error);
+    }
   }
 
   displayComment(comment, index) {
@@ -76,9 +101,103 @@ export default class PostScreen extends React.Component {
     )
   }
 
+  async postComment() {
+    const { comment } = this.state
+
+    var details = {
+      'comment': comment
+    };
+
+    var formBody = [];
+
+    for (var property in details) {
+      var encodedKey = encodeURIComponent(property);
+      var encodedValue = encodeURIComponent(details[property]);
+
+      formBody.push(encodedKey + "=" + encodedValue);
+    }
+
+    formBody = formBody.join("&");
+
+    try {
+      let response = await fetch(`${ENV_URL}/api/posts/84/comment/27`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+        },
+        body: formBody
+      });
+
+      let responseJSON = null
+
+      if (response.status === 201) {
+        responseJSON = await response.json();
+
+        console.log(responseJSON)
+
+        this.fetchPost()
+        this.setState({ comment: null })
+
+        Alert.alert(
+          'Comment added!',
+          '',
+          [
+            {
+              text: "Dismiss", onPress: () => {
+                console.log("comment added!")
+              }
+            }
+          ],
+          { cancelable: false }
+        )
+      } else {
+        responseJSON = await response.json();
+        const error = responseJSON.message
+
+        console.log(responseJSON)
+
+        this.setState({ isLoading: false, errors: responseJSON.errors, comment: null })
+
+        Alert.alert('Unable to add new comment!', `${error}`)
+      }
+    } catch (error) {
+      this.setState({ isLoading: false, error, comment: null })
+
+      Alert.alert('Unable to add new comment!', `${error}`)
+    }
+  }
+
+  renderAddComment() {
+    const { comment } = this.state
+
+    return (
+      <View style={styles.commentsContainer}>
+        <View style={styles.commentContainer}>
+          <Icon
+            name='ios-chatbubbles'
+            color='black'
+            type="ionicon"
+            size={25}
+            containerStyle={{marginHorizontal: 10}}
+          />
+          <Input containerStyle={{width: '100%'}}
+            value={comment}
+            onChangeText={comment => this.setState({ comment })}
+            placeholder="Enter a comment"
+            placeholderTextColor="gray"
+            inputStyle={{ color: 'black', fontFamily: 'Righteous', fontSize: 14 }}
+            onSubmitEditing={() => {
+              this.postComment()
+            }}
+          />
+        </View>
+      </View>
+    )
+  }
+
   render() {
     const { navigate } = this.props.navigation
-    const { member, commented, liked } = this.state
+    const { member, liked } = this.state
 
     const Component = member.comments ? ScrollView : View
 
@@ -119,18 +238,17 @@ export default class PostScreen extends React.Component {
                 color={liked ? 'red' : null} type="ionicon" size={25}
                 onPress={() => this.setState({ liked: !liked })}
               />
-              <Text style={styles.postActionText}>{member.likes || 0}</Text>
+              <Text style={styles.postActionText}>{member.likes && member.likes.length || 0}</Text>
             </View>
           </View>
         </View>
         <Text style={styles.sectionHeaderText}>{member.comments ? member.comments.length : 'NO'} COMMENTS</Text>
+        {member.comments && this.renderComments()}
+        {this.renderAddComment()}
       </Component>
     )
   }
 }
-
-// Not displaying comments for now cause it's not returned by /api endpoint
-// {member.comments && this.renderComments()}
 
 const styles = StyleSheet.create({
   mainContent: {

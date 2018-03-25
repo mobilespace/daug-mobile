@@ -151,9 +151,9 @@ export default class SocialFeedScreen extends React.Component {
             <Icon
               name={commented ? "ios-chatbubbles" : "ios-chatbubbles-outline"}
               color={commented ? 'black' : null} type="ionicon" size={25}
-              onPress={() => this.setState({ commented: !commented })}
-            />
-            <Text style={styles.postActionText}>{member.comments || 0}</Text>
+              onPress={() => navigate('Post', { post: member })}
+          />
+            <Text style={styles.postActionText}>{member.comments && member.comments.length || 0}</Text>
           </View>
           <View style={[styles.postActionView, {marginRight: 20}]}>
             <Icon
@@ -161,7 +161,7 @@ export default class SocialFeedScreen extends React.Component {
               color={liked ? 'red' : null} type="ionicon" size={25}
               onPress={() => this.setState({ liked: !liked })}
             />
-            <Text style={styles.postActionText}>{member.likes || 0}</Text>
+            <Text style={styles.postActionText}>{member.likes && member.likes.length || 0}</Text>
           </View>
         </View>
       </View>
